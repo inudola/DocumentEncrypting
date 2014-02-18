@@ -1,1 +1,20 @@
-This file was created by IntelliJ IDEA 12.1.6 for binding GitHub repository
+Modules:
+1 - Config - all application configurations.
+    a) AppConfig - configuration from command line arguments.
+
+2 - Controllers - all application controllers
+    a) ApplicationController - receive arguments from command line and launch Console or GUI version of UI.
+    b) EncryptingController - contains logic for encrypting files.
+
+3 - Crypto - all encrypting algorithms
+    a) ICrypto - interface for all classes for encrypting
+
+4 - Entities - all application entities
+    a) CryptoEntity - contains information for encrypting algorithms
+
+5 - UI - contains graphical and console representation
+    * Graphical - module for classes with graphical interface
+    * Console - module for classes with console interface
+    a) UserInterface - interface for Graphical and Console classes
+
+DocumentEncrypting - entry point of application
