@@ -12,6 +12,9 @@ public class AppConfig {
         this.name = name;
     }
 
+    private AppConfig() {
+    }
+
     public static AppConfig getInstance() {
         return ConfigHolder.APP_CONFIG;
     }
