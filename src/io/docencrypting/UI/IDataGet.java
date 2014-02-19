@@ -4,10 +4,14 @@ import java.io.File;
 
 public interface IDataGet {
 
-    public File getFileIn();
+    public String getFileIn();
 
-    public File getFileOut();
+    public String getFileOut();
 
     public String getPassword();
+
+    public boolean getNeedHiddenFiles();
+
+    public String getNameEncryptingAlgorithm();
 
 }
