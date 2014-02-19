@@ -2,13 +2,6 @@ package io.docencrypting.Entities;
 
 import java.io.File;
 
-/**
- * Created with IntelliJ IDEA.
- * User: dmitriy
- * Date: 2/18/14
- * Time: 11:34 PM
- * To change this template use File | Settings | File Templates.
- */
 public class CryptoEntity {
 
     private File fileIn = null;
