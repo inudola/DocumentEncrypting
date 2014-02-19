@@ -1,10 +1,20 @@
 package io.docencrypting.Config;
 
+import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.concurrent.atomic.AtomicReference;
 
 public class AppConfig {
 
     private AtomicReference<String> name;
+    private AtomicBoolean isConsole;
+
+    public boolean isConsole() {
+        return isConsole.get();
+    }
+
+    public void setConsole(boolean console) {
+        isConsole.set(console);
+    }
 
     public String getName() {
         return name.get();
@@ -15,7 +25,8 @@ public class AppConfig {
     }
 
     private AppConfig() {
-        name = new AtomicReference<String>();
+        name = new AtomicReference<>();
+        isConsole = new AtomicBoolean(false);
     }
 
     public static AppConfig getInstance() {
