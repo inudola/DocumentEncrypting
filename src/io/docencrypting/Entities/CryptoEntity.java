@@ -4,6 +4,8 @@ import java.io.File;
 
 public class CryptoEntity {
 
+    private String name = null;
+
     private File fileIn = null;
 
     private File fileOut = null;
@@ -11,6 +13,14 @@ public class CryptoEntity {
     private String password = null;
 
     private boolean needHiddenFiles = false;
+
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
+    }
 
     public boolean isNeedHiddenFiles() {
         return needHiddenFiles;
