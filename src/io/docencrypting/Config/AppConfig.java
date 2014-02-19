@@ -1,18 +1,21 @@
 package io.docencrypting.Config;
 
+import java.util.concurrent.atomic.AtomicReference;
+
 public class AppConfig {
 
-    private String name;
+    private AtomicReference<String> name;
 
     public String getName() {
-        return name;
+        return name.get();
     }
 
     public void setName(String name) {
-        this.name = name;
+        this.name.set(name);
     }
 
     private AppConfig() {
+        name = new AtomicReference<String>();
     }
 
     public static AppConfig getInstance() {
