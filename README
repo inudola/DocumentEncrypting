@@ -1,3 +1,5 @@
+Using Java 7.
+
 Modules:
 1 - Config - all application configurations.
     a) AppConfig - configuration from command line arguments.
@@ -24,5 +26,8 @@ Modules:
 
 6 - Parser - parse arguments from command line
     a) ArgumentParser - parser
+
+7 - Utils - contains all utils common for application
+    a) FileUtils - utilities for working with files
 
 DocumentEncrypting - entry point of application

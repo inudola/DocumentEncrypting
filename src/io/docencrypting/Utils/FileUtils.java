@@ -1,4 +1,4 @@
-package io.docencrypting.Util;
+package io.docencrypting.Utils;
 
 import java.io.File;
 import java.util.Vector;
