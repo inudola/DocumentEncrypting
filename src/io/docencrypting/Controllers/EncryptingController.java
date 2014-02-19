@@ -3,7 +3,7 @@ package io.docencrypting.Controllers;
 import io.docencrypting.Crypto.EncryptingKinds;
 import io.docencrypting.Entities.CryptoEntity;
 import io.docencrypting.UI.IDataGet;
-import io.docencrypting.Util.FileUtils;
+import io.docencrypting.Utils.FileUtils;
 
 import java.io.File;
 
