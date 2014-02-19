@@ -24,4 +24,20 @@ public class FileUtils {
         return files;
     }
 
+    public static File getFile(String path) {
+        File file = null;
+        if (path == null || path.isEmpty()) {
+            return null;
+        }
+        try {
+            file = new File(path);
+        } catch (Exception ex) {
+            //TODO add log message
+        }
+        if (file != null && !file.exists()) {
+            return null;
+        }
+        return file;
+    }
+
 }
