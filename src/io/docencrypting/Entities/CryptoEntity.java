@@ -10,6 +10,16 @@ public class CryptoEntity {
 
     private String password = null;
 
+    private boolean needHiddenFiles = false;
+
+    public boolean isNeedHiddenFiles() {
+        return needHiddenFiles;
+    }
+
+    public void setNeedHiddenFiles(boolean needHiddenFiles) {
+        this.needHiddenFiles = needHiddenFiles;
+    }
+
     public File getFileIn() {
         return fileIn;
     }
