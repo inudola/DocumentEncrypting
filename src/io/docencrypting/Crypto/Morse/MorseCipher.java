@@ -40,7 +40,6 @@ public class MorseCipher {
         if (letter == null || letter.equals(DIVIDER)) {
             letter = SPACE;
         }
-        System.out.println("Morse: " + morse + ", Letter: " + letter);
         return letter;
     }
 
@@ -65,7 +64,6 @@ public class MorseCipher {
         try {
             while ((str = reader.readLine()) != null) {
                 String[] tokens = str.split("#");
-                System.out.println(str + " : " + tokens.length);
                 for (int i = 0; i < tokens.length - 1; i++) {
                     letterToMorse.put(tokens[i], tokens[tokens.length - 1]);
                 }
