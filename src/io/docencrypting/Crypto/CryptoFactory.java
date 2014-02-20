@@ -1,5 +1,7 @@
 package io.docencrypting.Crypto;
 
+import io.docencrypting.Crypto.Morse.Morse;
+
 public class CryptoFactory {
 
     public static Hill makeHill() {

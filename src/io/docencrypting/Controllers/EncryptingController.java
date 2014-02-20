@@ -6,6 +6,7 @@ import io.docencrypting.UI.IDataGet;
 import io.docencrypting.Utils.FileUtils;
 
 import java.io.File;
+import java.io.IOException;
 
 public class EncryptingController {
 
@@ -19,7 +20,7 @@ public class EncryptingController {
         return EncryptingKinds.values();
     }
 
-    public void encryptWith() {
+    public void encryptWith() throws IOException {
         CryptoEntity cryptoEntity = createCryptoEntity();
         if (cryptoEntity == null) {
             //TODO fault message
