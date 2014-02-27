@@ -1,5 +1,6 @@
 package io.docencrypting.Crypto;
 
+import io.docencrypting.Crypto.Hill.Hill;
 import io.docencrypting.Crypto.Morse.Morse;
 
 public class CryptoFactory {
