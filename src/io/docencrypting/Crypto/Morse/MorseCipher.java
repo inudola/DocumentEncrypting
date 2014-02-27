@@ -12,8 +12,8 @@ public class MorseCipher {
     private static String DIVIDER = "DIVIDER";
     private static String SPACE = " ";
 
-    private static HashMap<String, String> letterToMorse = null;
-    private static HashMap<String, String> morseToLetter = null;
+    private HashMap<String, String> letterToMorse = null;
+    private HashMap<String, String> morseToLetter = null;
 
     public static MorseCipher getInstance() {
         return MorseHolder.MORSE_CIPHER;
@@ -43,11 +43,11 @@ public class MorseCipher {
         return letter;
     }
 
-    public static String getMorseFromLetter(String letter) {
+    public static synchronized String getMorseFromLetter(String letter) {
         return getInstance().getMorse(letter);
     }
 
-    public static String getLetterFromMorse(String morse) {
+    public static synchronized String getLetterFromMorse(String morse) {
         return getInstance().getLetter(morse);
     }
 
@@ -58,7 +58,7 @@ public class MorseCipher {
         try {
             reader = new BufferedReader(new FileReader(AppConfig.getInstance().getMorseCipherPath()));
         } catch (Exception ex) {
-            throw new MorseCipherNotLoad();
+            throw new MorseCipherNotLoadException();
         }
         String str;
         try {
@@ -71,7 +71,7 @@ public class MorseCipher {
             }
             reader.close();
         } catch (IOException ex) {
-            ex.printStackTrace();
+            throw new MorseCipherNotLoadException();
         }
 
     }
