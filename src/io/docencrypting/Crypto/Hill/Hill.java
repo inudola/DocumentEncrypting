@@ -1,7 +1,5 @@
 package io.docencrypting.Crypto.Hill;
 
-
-import io.docencrypting.Crypto.CryptoFactory;
 import io.docencrypting.Crypto.ICrypto;
 import io.docencrypting.Entities.CryptoEntity;
 
@@ -78,19 +76,19 @@ public class Hill implements ICrypto {
 
     }
 
-    public static void main(String[] args) throws IOException {
-        Hill hill = CryptoFactory.makeHill();
-        BufferedReader in = new BufferedReader(new InputStreamReader(System.in));
-        CryptoEntity entity = new CryptoEntity();
-        File file = new File("/Users/dmitriy/Documents/JavaProject/DocumentEncrypting/text.txt");
-        entity.setFileIn(file);
-        entity.setFileOut(new File("/Users/dmitriy/Documents/JavaProject/DocumentEncrypting/Ciphers/textCode.txt"));
-        entity.setPassword("GYBNQKURP");
-        hill.encode(entity);
-        entity.setFileIn(new File("/Users/dmitriy/Documents/JavaProject/DocumentEncrypting/Ciphers/textCode.txt"));
-        entity.setFileOut(new File("/Users/dmitriy/Documents/JavaProject/DocumentEncrypting/Ciphers/textEncode.txt"));
-        hill.decode(entity);
-    }
+//    public static void main(String[] args) throws IOException {
+//        Hill hill = CryptoFactory.makeHill();
+//        BufferedReader in = new BufferedReader(new InputStreamReader(System.in));
+//        CryptoEntity entity = new CryptoEntity();
+//        File file = new File("/Users/dmitriy/Documents/JavaProject/DocumentEncrypting/text.txt");
+//        entity.setFileIn(file);
+//        entity.setFileOut(new File("/Users/dmitriy/Documents/JavaProject/DocumentEncrypting/Ciphers/textCode.txt"));
+//        entity.setPassword("GYBNQKURP");
+//        hill.encode(entity);
+//        entity.setFileIn(new File("/Users/dmitriy/Documents/JavaProject/DocumentEncrypting/Ciphers/textCode.txt"));
+//        entity.setFileOut(new File("/Users/dmitriy/Documents/JavaProject/DocumentEncrypting/Ciphers/textEncode.txt"));
+//        hill.decode(entity);
+//    }
 
     private Matrix createPasswordMatrix(int lengthPassword, int sideSize, String password) {
         Matrix passMatrix = new Matrix(sideSize, sideSize);
