@@ -8,11 +8,21 @@ public class AppConfig {
     private AtomicReference<String> name;
     private AtomicBoolean isConsole;
     private AtomicReference<String> morseCipherPath;
+    private AtomicReference<String> hillCipherPath;
 
     private static String DEFAULT_MORSE_CFG_PATH = "Ciphers/morse_cipher.cfg";
+    private static String DEFAULT_HILL_CFG_PATH = "Ciphers/hill_cipher.cfg";
 
     public boolean isConsole() {
         return isConsole.get();
+    }
+
+    public String getHillCipherPath() {
+        return hillCipherPath.get();
+    }
+
+    public void setHillCipherPath(String hillCipherPath) {
+        this.hillCipherPath.set(hillCipherPath);
     }
 
     public void setConsole(boolean console) {
@@ -39,6 +49,7 @@ public class AppConfig {
         name = new AtomicReference<>();
         isConsole = new AtomicBoolean(false);
         morseCipherPath = new AtomicReference<>(DEFAULT_MORSE_CFG_PATH);
+        hillCipherPath = new AtomicReference<>(DEFAULT_HILL_CFG_PATH);
     }
 
     public static AppConfig getInstance() {
