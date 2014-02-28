@@ -5,13 +5,9 @@ import java.io.File;
 public class CryptoEntity {
 
     private String name = null;
-
     private File fileIn = null;
-
     private File fileOut = null;
-
     private String password = null;
-
     private boolean needHiddenFiles = false;
 
     public String getName() {

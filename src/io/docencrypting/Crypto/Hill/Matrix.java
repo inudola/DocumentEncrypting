@@ -10,6 +10,15 @@ class Matrix {
         matrix = new Integer[rows][cols];
     }
 
+    public static void show(Matrix mat) {
+        for (int i = 0; i < mat.getRows(); i++) {
+            for (int j = 0; j < mat.getColumns(); j++) {
+                System.out.print(mat.getElement(i, j) % 26 + "\t");
+            }
+            System.out.println();
+        }
+    }
+
     public int getRows() {
         return matrix.length;
     }
@@ -27,12 +36,12 @@ class Matrix {
     }
 
     public Matrix add(Matrix newMatrix) {
-         return processPlusMinus(newMatrix, new Operation() {
-             @Override
-             public Integer performOperation(Integer left, Integer right) {
-                 return left + right;
-             }
-         });
+        return processPlusMinus(newMatrix, new Operation() {
+            @Override
+            public Integer performOperation(Integer left, Integer right) {
+                return left + right;
+            }
+        });
     }
 
     public Matrix subtract(Matrix newMatrix) {
@@ -104,8 +113,6 @@ class Matrix {
         return result;
     }
 
-
-
     public Matrix divide(Matrix newMatrix) {
         Matrix result = null;   //TODO fix it
 
@@ -124,15 +131,6 @@ class Matrix {
             }
         }
         return result;
-    }
-
-    public static void show(Matrix mat) {
-        for (int i = 0; i < mat.getRows(); i++) {
-            for (int j = 0; j < mat.getColumns(); j++) {
-                System.out.print(mat.getElement(i, j) % 26 + "\t");
-            }
-            System.out.println();
-        }
     }
 
     public double determinant() {
@@ -160,11 +158,11 @@ class Matrix {
 
     private int greatestCommonDivisor(int mod) {
         double det = determinant();
-        float c =  (float) ((Math.sqrt(det) < Math.sqrt(mod)) ? Math.sqrt(det) : Math.sqrt(mod));
+        float c = (float) ((Math.sqrt(det) < Math.sqrt(mod)) ? Math.sqrt(det) : Math.sqrt(mod));
         int count = (c - Math.round(c) > 0) ? Math.round(c) + 1 : Math.round(c);
         int gcd = 1;
         for (int i = 2; i < count; i++) {
-            if (det%i==0 && mod%i==0)  {
+            if (det % i == 0 && mod % i == 0) {
                 gcd = i;
             }
         }
@@ -179,7 +177,7 @@ class Matrix {
         int det = (int) determinant();
         Matrix result = this.cofactor().adjoint().transpose();
         det %= mod;
-        int d = mi(mod(det, mod), mod)%mod;
+        int d = mi(mod(det, mod), mod) % mod;
         for (int i = 0; i < getRows(); i++) {
             for (int j = 0; j < getColumns(); j++) {
                 result.setElement(i, j, mod(result.getElement(i, j) * d, mod));
@@ -192,15 +190,13 @@ class Matrix {
         return (m > 0) ? m % mod : (mod + m % mod);
     }
 
-    public int mi(int det, int mod)
-    {
+    public int mi(int det, int mod) {
         int q, r1, r2, r, t1, t2, t;
         r1 = mod;
         r2 = det;
         t1 = 0;
         t2 = 1;
-        while(r1 != 1 && r2 != 0)
-        {
+        while (r1 != 1 && r2 != 0) {
             q = r1 / r2;
             r = r1 % r2;
             t = t1 - (t2 * q);

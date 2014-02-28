@@ -2,7 +2,6 @@ package io.docencrypting.Crypto;
 
 import io.docencrypting.Entities.CryptoEntity;
 
-import java.io.FileNotFoundException;
 import java.io.IOException;
 
 public interface ICrypto {

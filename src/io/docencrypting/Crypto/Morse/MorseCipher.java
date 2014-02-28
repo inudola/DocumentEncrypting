@@ -11,45 +11,8 @@ public class MorseCipher {
 
     private static String DIVIDER = "DIVIDER";
     private static String SPACE = " ";
-
     private HashMap<String, String> letterToMorse = null;
     private HashMap<String, String> morseToLetter = null;
-
-    public static MorseCipher getInstance() {
-        return MorseHolder.MORSE_CIPHER;
-    }
-
-    public HashMap<String, String> getLetterToMorse() {
-        return letterToMorse;
-    }
-
-    public HashMap<String, String> getMorseToLetter() {
-        return morseToLetter;
-    }
-
-    private String getMorse(String letter) {
-        String morse = letterToMorse.get(letter);
-        if (morse == null) {
-            morse = letterToMorse.get(DIVIDER);
-        }
-        return morse;
-    }
-
-    private String getLetter(String morse) {
-        String letter = morseToLetter.get(morse);
-        if (letter == null || letter.equals(DIVIDER)) {
-            letter = SPACE;
-        }
-        return letter;
-    }
-
-    public static synchronized String getMorseFromLetter(String letter) {
-        return getInstance().getMorse(letter);
-    }
-
-    public static synchronized String getLetterFromMorse(String morse) {
-        return getInstance().getLetter(morse);
-    }
 
     private MorseCipher() {
         letterToMorse = new HashMap<>();
@@ -74,6 +37,42 @@ public class MorseCipher {
             throw new MorseCipherNotLoadException();
         }
 
+    }
+
+    public static MorseCipher getInstance() {
+        return MorseHolder.MORSE_CIPHER;
+    }
+
+    public static synchronized String getMorseFromLetter(String letter) {
+        return getInstance().getMorse(letter);
+    }
+
+    public static synchronized String getLetterFromMorse(String morse) {
+        return getInstance().getLetter(morse);
+    }
+
+    public HashMap<String, String> getLetterToMorse() {
+        return letterToMorse;
+    }
+
+    public HashMap<String, String> getMorseToLetter() {
+        return morseToLetter;
+    }
+
+    private String getMorse(String letter) {
+        String morse = letterToMorse.get(letter);
+        if (morse == null) {
+            morse = letterToMorse.get(DIVIDER);
+        }
+        return morse;
+    }
+
+    private String getLetter(String morse) {
+        String letter = morseToLetter.get(morse);
+        if (letter == null || letter.equals(DIVIDER)) {
+            letter = SPACE;
+        }
+        return letter;
     }
 
     private static class MorseHolder {

@@ -11,7 +11,6 @@ public class HillCipher {
 
     private static String SPACE = " ";
     private static int SPACE_INDEX = 0;
-
     private static HashMap<Integer, Character> integerToString = null;
     private static HashMap<Character, Integer> stringToInteger = null;
 
@@ -23,18 +22,6 @@ public class HillCipher {
 
     public static HillCipher getInstance() {
         return HillHolder.HILL_CIPHER;
-    }
-
-    private String getLetterHill(Integer number) {
-        return integerToString.keySet().contains(number)
-                    ? integerToString.get(number).toString()
-                        : SPACE;
-    }
-
-    private int getNumberHill(Character character) {
-        return stringToInteger.keySet().contains(character)
-                ? stringToInteger.get(character)
-                : SPACE_INDEX;
     }
 
     public static synchronized String getLetter(Integer number) {
@@ -55,6 +42,18 @@ public class HillCipher {
 
     public static Integer getSpaceIndex() {
         return SPACE_INDEX;
+    }
+
+    private String getLetterHill(Integer number) {
+        return integerToString.keySet().contains(number)
+                    ? integerToString.get(number).toString()
+                        : SPACE;
+    }
+
+    private int getNumberHill(Character character) {
+        return stringToInteger.keySet().contains(character)
+                ? stringToInteger.get(character)
+                : SPACE_INDEX;
     }
 
     private void fillHashMaps() {

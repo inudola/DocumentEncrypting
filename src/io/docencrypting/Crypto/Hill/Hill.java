@@ -70,10 +70,18 @@ public class Hill implements ICrypto {
         writer.close();
     }
 
-    private interface LineProcessing {
-
-        public Matrix createMagicMatrix(int lengthPassword, int sideSize, String password);
-
+    private Matrix createPasswordMatrix(int lengthPassword, int sideSize, String password) {
+        Matrix passMatrix = new Matrix(sideSize, sideSize);
+        for (int i = 0; i < sideSize; i++) {
+            for (int j = 0; j < sideSize; j++) {
+                if (i * sideSize + j < lengthPassword) {
+                    passMatrix.setElement(i, j, HillCipher.getNumber(password.charAt(i * sideSize + j)));
+                } else {
+                    passMatrix.setElement(i, j, 0);
+                }
+            }
+        }
+        return passMatrix;
     }
 
 //    public static void main(String[] args) throws IOException {
@@ -90,18 +98,10 @@ public class Hill implements ICrypto {
 //        hill.decode(entity);
 //    }
 
-    private Matrix createPasswordMatrix(int lengthPassword, int sideSize, String password) {
-        Matrix passMatrix = new Matrix(sideSize, sideSize);
-        for (int i = 0; i < sideSize; i++) {
-            for (int j = 0; j < sideSize; j++) {
-                if (i * sideSize + j < lengthPassword) {
-                    passMatrix.setElement(i, j, HillCipher.getNumber(password.charAt(i * sideSize + j)));
-                } else {
-                    passMatrix.setElement(i, j, 0);
-                }
-            }
-        }
-        return passMatrix;
+    private interface LineProcessing {
+
+        public Matrix createMagicMatrix(int lengthPassword, int sideSize, String password);
+
     }
 
 }

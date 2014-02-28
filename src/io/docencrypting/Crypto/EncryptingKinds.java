@@ -4,7 +4,6 @@ public enum EncryptingKinds {
     Hill("Hill"),
     Morse("Morse"),
     Playfair("Playfair");
-
     private String name;
 
     private EncryptingKinds(String name) {
