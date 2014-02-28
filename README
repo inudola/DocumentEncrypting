@@ -11,9 +11,17 @@ Modules:
 3 - Crypto - all encrypting algorithms
     a) ICrypto - interface for all classes for encrypting
     b) CryptoFactory - factory for making algorithms
-    c) Hill - realization Hill algorithms
-    d) Morse - realization Morse algorithms
-    e) Playfair - realization Playfair algorithms
+    - Hill - realization Hill algorithms
+        a) Hill - main realization Hill's algorithm
+        b) HillCipher - convert letter in number and number in letter
+        c) HillCipherNotLoadException - exception that can be thrown when HillCipher can't load cfg
+        d) HillUtils - utilities
+        e) Matrix - realization matrix operation, needed for Hill algorithm
+    - Morse - realization Morse algorithms
+        a) Morse - main realization Morse's algorithm
+        b) MorseCipher - convert plain letter to Morse cipher
+        c) MorseCipherNotLoadException - exception that can be thrown when MorseCipher can't load cfg
+    - Playfair - realization Playfair algorithms
 
 4 - Entities - all application entities
     a) CryptoEntity - contains information for encrypting algorithms
