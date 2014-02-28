@@ -4,7 +4,7 @@ import io.docencrypting.Entities.CryptoEntity;
 import java.io.IOException;
 
 /**
- * General interface for all cipher algorithms
+ * Provide interface for all cipher algorithms
  */
 
 public interface ICrypto {
