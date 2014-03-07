@@ -2,12 +2,20 @@ package io.docencrypting.Crypto.Hill;
 
 import io.docencrypting.Crypto.ICrypto;
 import io.docencrypting.Entities.CryptoEntity;
-
 import java.io.*;
+
+/**
+ * Class that implements Hill cipher
+ */
 
 public class Hill implements ICrypto {
 
-
+    /**
+     * Decode file that encode with hill cipher
+     * @param entity contains all information that needed for cipher algorithm
+     * @throws IOException
+     * @see #encode(io.docencrypting.Entities.CryptoEntity)
+     */
     @Override
     public void decode(CryptoEntity entity) throws IOException {
         process(entity, new LineProcessing() {
@@ -18,6 +26,12 @@ public class Hill implements ICrypto {
         });
     }
 
+    /**
+     * Encode file with Hill cipher
+     * @param entity contains all information that needed for cipher algorithm
+     * @throws IOException
+     * @see #decode(io.docencrypting.Entities.CryptoEntity)
+     */
     @Override
     public void encode(CryptoEntity entity) throws IOException {
         process(entity, new LineProcessing() {
@@ -28,6 +42,12 @@ public class Hill implements ICrypto {
         });
     }
 
+    /**
+     * Method with common code for encode and decode operation
+     * @param entity contains all information that needed for cipher algorithm
+     * @param processing function object that convert symbols
+     * @throws IOException
+     */
     private void process(CryptoEntity entity, LineProcessing processing) throws IOException {
         File fileIn = entity.getFileIn();
         File fileOut = entity.getFileOut();
@@ -42,13 +62,13 @@ public class Hill implements ICrypto {
         BufferedWriter writer = new BufferedWriter(new FileWriter(fileOut));
         String line;
         while ((line = reader.readLine()) != null) {
-            int count = line.length();
-            int numberOfBlocks = HillUtils.calculateNumberOfBlocks(count, sideSize);
+            int length = line.length();
+            int numberOfBlocks = HillUtils.calculateNumberOfBlocks(length, sideSize);
 
             for (int i = 0; i < numberOfBlocks; i++) {
                 Matrix phrase = new Matrix(sideSize, 1);
                 for (int j = 0; j < sideSize; j++) {
-                    if (i * sideSize + j < count) {
+                    if (i * sideSize + j < length) {
                         phrase.setElement(j, 0, HillCipher.getNumber(line.charAt(i * sideSize + j)));
                     } else {
                         phrase.setElement(j, 0, HillCipher.getSpaceIndex());
@@ -98,6 +118,9 @@ public class Hill implements ICrypto {
 //        hill.decode(entity);
 //    }
 
+    /**
+     * Interface for function object
+     */
     private interface LineProcessing {
 
         public Matrix createMagicMatrix(int lengthPassword, int sideSize, String password);

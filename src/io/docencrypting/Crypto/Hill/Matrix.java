@@ -1,71 +1,64 @@
 package io.docencrypting.Crypto.Hill;
 
-
+/**
+ * Class representation matrix
+ */
 //TODO delete unused functions
 class Matrix {
 
-    private Integer[][] matrix;
+    private Integer[][] matrix;     /// Matrix
 
+    /**
+     * Create matrix with rows and columns
+     * @param rows Rows in matrix
+     * @param cols Columns in matrix
+     */
     public Matrix(int rows, int cols) {
         matrix = new Integer[rows][cols];
     }
 
-    public static void show(Matrix mat) {
-        for (int i = 0; i < mat.getRows(); i++) {
-            for (int j = 0; j < mat.getColumns(); j++) {
-                System.out.print(mat.getElement(i, j) % 26 + "\t");
-            }
-            System.out.println();
-        }
-    }
-
+    /**
+     * Get rows in matrix
+     * @return rows
+     */
     public int getRows() {
         return matrix.length;
     }
 
+    /**
+     * Get columns in matrix
+     * @return columns
+     */
     public int getColumns() {
         return matrix[0].length;
     }
 
+    /**
+     * Get element in position [row][column]
+     * @param row Row position
+     * @param column Column position
+     * @return element
+     */
     public Integer getElement(int row, int column) {
         return matrix[row][column];
     }
 
+    /**
+     * Set value in position [row][column]
+     * @param row Row position
+     * @param column Column position
+     * @param value Value
+     */
     public void setElement(int row, int column, Integer value) {
         matrix[row][column] = value;
     }
 
-    public Matrix add(Matrix newMatrix) {
-        return processPlusMinus(newMatrix, new Operation() {
-            @Override
-            public Integer performOperation(Integer left, Integer right) {
-                return left + right;
-            }
-        });
-    }
-
-    public Matrix subtract(Matrix newMatrix) {
-        return processPlusMinus(newMatrix, new Operation() {
-            @Override
-            public Integer performOperation(Integer left, Integer right) {
-                return left - right;
-            }
-        });
-    }
-
-    private Matrix processPlusMinus(Matrix newMatrix, Operation operation) {
-        if (!this.equalsSize(newMatrix)) {
-            return null;
-        }
-        Matrix result = new Matrix(getRows(), getColumns());
-        for (int i = 0; i < getRows(); i++) {
-            for (int j = 0; j < getColumns(); j++) {
-                result.setElement(i, j, operation.performOperation(getElement(i, j), newMatrix.getElement(i, j)));
-            }
-        }
-        return result;
-    }
-
+    /**
+     * Multiple two matrix
+     * @param newMatrix Matrix
+     * @param mod Modulo
+     * @return Result multiple matrix by modulo
+     */
     public Matrix multiple(Matrix newMatrix, int mod) {
         if (getColumns() != newMatrix.getRows()) {
             return null;
@@ -77,13 +70,17 @@ class Matrix {
                 for (int k = 0; k < getColumns(); k++) {
                     value += getElement(i, k) * newMatrix.getElement(k, j);
                 }
-                result.setElement(i, j, mod(value, mod));
+                result.setElement(i, j, detByModulo(value, mod));
             }
         }
         return result;
     }
 
-    public Matrix adjoint() {
+    /**
+     * Calculate adjoint matrix
+     * @return adjoint matrix
+     */
+    private Matrix adjoint() {
         Matrix result = new Matrix(getRows(), getColumns());
         for (int i = 0; i < getRows(); i++) {
             for (int j = 0; j < getColumns(); j++) {
@@ -93,17 +90,11 @@ class Matrix {
         return result;
     }
 
-    public Matrix multiple(int mult) {
-        Matrix result = new Matrix(getRows(), getColumns());
-        for (int i = 0; i < getRows(); i++) {
-            for (int j = 0; j < getColumns(); j++) {
-                result.setElement(i, j, getElement(i, j) * mult);
-            }
-        }
-        return result;
-    }
-
-    public Matrix transpose() {
+    /**
+     * Transpose matrix
+     * @return transposed matrix
+     */
+    private Matrix transpose() {
         Matrix result = new Matrix(getColumns(), getRows());
         for (int i = 0; i < getRows(); i++) {
             for (int j = 0; j < getColumns(); j++) {
@@ -113,12 +104,12 @@ class Matrix {
         return result;
     }
 
-    public Matrix divide(Matrix newMatrix) {
-        Matrix result = null;   //TODO fix it
-
-        return result;
-    }
-
+    /**
+     * Calculate minor
+     * @param row Row
+     * @param column Column
+     * @return minor for matrix
+     */
     private Matrix minor(int row, int column) {
         Matrix result = new Matrix(getRows() - 1, getColumns() - 1);
         for (int i = 0; i < getRows(); i++) {
@@ -133,7 +124,11 @@ class Matrix {
         return result;
     }
 
-    public double determinant() {
+    /**
+     * Calculate determinant of matrix
+     * @return determinant
+     */
+    private double determinant() {
         double result = 0.0;
 
         if (getRows() == 1 && getColumns() == 1) {
@@ -146,7 +141,11 @@ class Matrix {
         return result;
     }
 
-    public Matrix cofactor() {
+    /**
+     * Calculate cofactor
+     * @return cofactor
+     */
+    private Matrix cofactor() {
         Matrix result = new Matrix(getRows(), getColumns());
         for (int i = 0; i < getRows(); i++) {
             for (int j = 0; j < getColumns(); j++) {
@@ -156,41 +155,35 @@ class Matrix {
         return result;
     }
 
-    private int greatestCommonDivisor(int mod) {
-        double det = determinant();
-        float c = (float) ((Math.sqrt(det) < Math.sqrt(mod)) ? Math.sqrt(det) : Math.sqrt(mod));
-        int count = (c - Math.round(c) > 0) ? Math.round(c) + 1 : Math.round(c);
-        int gcd = 1;
-        for (int i = 2; i < count; i++) {
-            if (det % i == 0 && mod % i == 0) {
-                gcd = i;
-            }
-        }
-        return gcd;
-    }
-
-    public boolean equalsSize(Matrix newMatrix) {
-        return (getRows() == newMatrix.getRows() && getColumns() == newMatrix.getColumns());
-    }
-
+    /**
+     * Inverse matrix by module
+     * @param mod Modulo
+     * @return inverse matrix
+     */
     public Matrix inverse(int mod) {
         int det = (int) determinant();
         Matrix result = this.cofactor().adjoint().transpose();
         det %= mod;
-        int d = mi(mod(det, mod), mod) % mod;
+        int d = mi(detByModulo(det, mod), mod) % mod;
         for (int i = 0; i < getRows(); i++) {
             for (int j = 0; j < getColumns(); j++) {
-                result.setElement(i, j, mod(result.getElement(i, j) * d, mod));
+                result.setElement(i, j, detByModulo(result.getElement(i, j) * d, mod));
             }
         }
         return result;
     }
 
-    public int mod(int m, int mod) {
-        return (m > 0) ? m % mod : (mod + m % mod);
+    /**
+     * Calculate detByModulo
+     * @param det Determinant
+     * @param mod Modulo
+     * @return determinant by modulo
+     */
+    private int detByModulo(int det, int mod) {
+        return (det > 0) ? det % mod : (mod + det % mod);
     }
 
-    public int mi(int det, int mod) {
+    private int mi(int det, int mod) {
         int q, r1, r2, r, t1, t2, t;
         r1 = mod;
         r2 = det;
@@ -206,12 +199,6 @@ class Matrix {
             t2 = t;
         }
         return t1 + t2;
-    }
-
-    private interface Operation {
-
-        public Integer performOperation(Integer left, Integer right);
-
     }
 
 //    public static void main(String[] args) {

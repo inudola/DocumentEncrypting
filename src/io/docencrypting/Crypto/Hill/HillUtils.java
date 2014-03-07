@@ -1,20 +1,34 @@
 package io.docencrypting.Crypto.Hill;
 
+/**
+ * Utilities for hill cipher
+ */
 class HillUtils {
 
-    static int calculateNumberOfBlocks(int count, int sideSize) {
-        if (count < sideSize) {
+    /**
+     * Calculate number of blocks
+     * @param length Length of string
+     * @param sideSize Size of side
+     * @return number of blocks
+     */
+    public static int calculateNumberOfBlocks(int length, int sideSize) {
+        if (length < sideSize) {
             return 1;
-        } else if (count % sideSize == 0) {
-            return count / sideSize;
+        } else if (length % sideSize == 0) {
+            return length / sideSize;
         } else {
-            return count / sideSize + 1;
+            return length / sideSize + 1;
         }
     }
 
-    static int getSideSizeOfMatrix(int lengthPassword) {
-        return (Math.sqrt(lengthPassword) - (int) Math.sqrt(lengthPassword) > 0)
-                ? ((int) Math.sqrt(lengthPassword)) + 1
-                : (int) Math.sqrt(lengthPassword);
+    /**
+     * Get side size of matrix
+     * @param length Length of matrix side
+     * @return
+     */
+    public static int getSideSizeOfMatrix(int length) {
+        return (Math.sqrt(length) - (int) Math.sqrt(length) > 0)
+                ? ((int) Math.sqrt(length)) + 1
+                : (int) Math.sqrt(length);
     }
 }
