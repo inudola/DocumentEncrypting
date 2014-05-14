@@ -27,6 +27,7 @@ public class MainFrame extends JFrame implements IDataGet, UserInterface {
     JLabel typeLabel = new JLabel("Type:");
     JLabel passwordLabel = new JLabel("Password:");
     JLabel hiddenLabel = new JLabel("Hidden:");
+    Box box = new Box(BoxLayout.Y_AXIS);
 
     public MainFrame() throws HeadlessException {
 
@@ -60,18 +61,13 @@ public class MainFrame extends JFrame implements IDataGet, UserInterface {
     }
 
     @Override
-    public void show() {
-
-    }
-
-    @Override
     public void makeUI() {
-        add(BoxCreator.makeLineBox(fileInLabel, fileInField, fileInButtom));
-        add(BoxCreator.makeLineBox(fileOutLabel, fileOutField, fileOutButtom));
-        add(BoxCreator.makeLineBox(typeLabel, typeComboBox));
-        add(BoxCreator.makeLineBox(passwordLabel, passwordField));
-        add(BoxCreator.makeLineBox(hiddenLabel, hiddenCheckBox));
-        add(BoxCreator.makeLineBox(encryptButtom, decryptButtom, settingsButtom));
+        box.add(BoxCreator.makeLineBox(fileInLabel, fileInField, fileInButtom));
+        box.add(BoxCreator.makeLineBox(fileOutLabel, fileOutField, fileOutButtom));
+        box.add(BoxCreator.makeLineBox(typeLabel, typeComboBox));
+        box.add(BoxCreator.makeLineBox(passwordLabel, passwordField));
+        box.add(BoxCreator.makeLineBox(hiddenLabel, hiddenCheckBox));
+        box.add(BoxCreator.makeLineBox(encryptButtom, decryptButtom, settingsButtom));
 
         fileInButtom.addActionListener(new ActionListener() {
             @Override
@@ -87,9 +83,9 @@ public class MainFrame extends JFrame implements IDataGet, UserInterface {
             }
         });
 
-//        centerFrame();
+        centerFrame();
+        setContentPane(box);
         setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
-        setVisible(true);
     }
 
     public void centerFrame(){
@@ -102,7 +98,7 @@ public class MainFrame extends JFrame implements IDataGet, UserInterface {
         if (y < 0) {
             y = 0;
         }
-        setBounds(x, y, getWidth(), getHeight());
+        setBounds(x, y, 400, 300);
     }
 }
 
