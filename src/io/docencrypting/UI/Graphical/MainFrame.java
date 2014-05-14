@@ -27,6 +27,7 @@ public class MainFrame extends JFrame implements IDataGet, UserInterface {
     JLabel typeLabel = new JLabel("Type:");
     JLabel passwordLabel = new JLabel("Password:");
     JLabel hiddenLabel = new JLabel("Hidden:");
+
     Box box = new Box(BoxLayout.Y_AXIS);
 
     public MainFrame() throws HeadlessException {
@@ -73,6 +74,7 @@ public class MainFrame extends JFrame implements IDataGet, UserInterface {
             @Override
             public void actionPerformed(ActionEvent e) {
                 fileInChooser.showOpenDialog(null);
+                fileInField.setText(fileInChooser.getSelectedFile().getAbsoluteFile().toString());
             }
         });
 
@@ -80,6 +82,7 @@ public class MainFrame extends JFrame implements IDataGet, UserInterface {
             @Override
             public void actionPerformed(ActionEvent e) {
                 fileOutChooser.showSaveDialog(null);
+                fileOutField.setText(fileOutChooser.getSelectedFile().getAbsoluteFile().toString());
             }
         });
 
@@ -89,16 +92,10 @@ public class MainFrame extends JFrame implements IDataGet, UserInterface {
     }
 
     public void centerFrame(){
-        Dimension screenSize = java.awt.Toolkit.getDefaultToolkit().getScreenSize();
-        int x = (int) ((screenSize.getWidth() - getWidth()) / 2);
-        if (x < 0) {
-            x = 0;
-        }
-        int y = (int) ((screenSize.getHeight() - getHeight()) / 2);
-        if (y < 0) {
-            y = 0;
-        }
-        setBounds(x, y, 400, 300);
+
+        Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();
+        setSize((int)screenSize.getWidth()/2,(int)screenSize.getHeight()/2);
+        setLocationRelativeTo(null);
     }
 }
 

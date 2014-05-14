@@ -18,7 +18,7 @@ public class ApplicationController {
             System.out.println("Cnsl");
         } else {
             System.out.println("Frame");
-            new MainFrame();
+            new MainFrame().setVisible(true);
 
         }
     }
