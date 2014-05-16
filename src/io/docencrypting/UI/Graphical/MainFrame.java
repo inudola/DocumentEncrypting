@@ -1,6 +1,8 @@
 package io.docencrypting.UI.Graphical;
 
+import io.docencrypting.Controllers.EncryptingController;
 import io.docencrypting.Crypto.EncryptingKinds;
+import io.docencrypting.Entities.CryptoEntity;
 import io.docencrypting.UI.IDataGet;
 import io.docencrypting.UI.UserInterface;
 
@@ -8,6 +10,7 @@ import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.io.File;
 
 public class MainFrame extends JFrame implements IDataGet, UserInterface {
     JButton fileInButtom = new JButton("Upload");
@@ -30,15 +33,18 @@ public class MainFrame extends JFrame implements IDataGet, UserInterface {
 
     Box box = new Box(BoxLayout.Y_AXIS);
 
-    public MainFrame() throws HeadlessException {
+    EncryptingController encryptingController;
 
+    public MainFrame() throws HeadlessException {
+        encryptingController = new EncryptingController();
+        encryptingController.setViewData(this);
         makeUI();
 
     }
 
     @Override
     public String getFileIn() {
-        return null;
+        return;
     }
 
     @Override
@@ -86,9 +92,38 @@ public class MainFrame extends JFrame implements IDataGet, UserInterface {
             }
         });
 
+        encryptButtom.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                JOptionPane.showMessageDialog(null, "File ecrypt");
+                //
+                // values combox = > type ecrypt =>
+                for (File file : fileInChooser.getSelectedFiles()) {
+                    CryptoEntity entity = new CryptoEntity();
+                    encryptingController.createCryptoEntity(file);
+                }
+            }
+        });
+
+        decryptButtom.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                JOptionPane.showMessageDialog(null, "File ecrypt");
+            }
+        });
+
         centerFrame();
         setContentPane(box);
         setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
+    }
+
+    public String getFileInPath(){
+        File[] arrayFile = fileInChooser.getSelectedFiles();
+        if(arrayFile.length > 1)
+        {
+            return arrayFile[0].getParent();
+        }
+        return arrayFile[0].getAbsolutePath();
     }
 
     public void centerFrame(){

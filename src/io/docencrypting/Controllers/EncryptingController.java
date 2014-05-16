@@ -20,8 +20,7 @@ public class EncryptingController {
         return EncryptingKinds.values();
     }
 
-    public void encryptWith() throws IOException {
-        CryptoEntity cryptoEntity = createCryptoEntity();
+    public void encryptWith(CryptoEntity cryptoEntity) throws IOException {
         if (cryptoEntity == null) {
             //TODO fault message
             return;
@@ -31,9 +30,9 @@ public class EncryptingController {
         }
     }
 
-    private CryptoEntity createCryptoEntity() {
+    public CryptoEntity createCryptoEntity(File fileIn) {
         CryptoEntity cryptoEntity = new CryptoEntity();
-        File fileIn;
+//        File fileIn;
         File fileOut;
         String password = null;
         String name = null;
@@ -41,7 +40,7 @@ public class EncryptingController {
         if (viewData == null) {
             return null;
         }
-        fileIn = FileUtils.getFile(viewData.getFileIn());
+//        fileIn = FileUtils.getFile(viewData.getFileIn());
         fileOut = FileUtils.getFile(viewData.getFileOut());
         needHidden = viewData.getNeedHiddenFiles();
         if (viewData.getPassword() != null) {
