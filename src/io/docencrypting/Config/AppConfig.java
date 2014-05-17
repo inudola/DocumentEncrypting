@@ -12,17 +12,20 @@ public class AppConfig {
     //default path's for cipher alphabet
     private static String DEFAULT_MORSE_CFG_PATH = "Ciphers/morse_cipher.cfg";
     private static String DEFAULT_HILL_CFG_PATH = "Ciphers/hill_cipher.cfg";
+    private static String DEFAULT_PLAYFAIR_CFG_PATH = "Ciphers/playfair_cipher.cfg";
 
     private AtomicReference<String> name;           /// Name of application
     private AtomicBoolean isConsole;                /// Console mode
     private AtomicReference<String> morseCipherPath;/// Path of Morse cipher
     private AtomicReference<String> hillCipherPath; /// Path of Hill cipher
+    private AtomicReference<String> playfairCipherPath;
 
     private AppConfig() {
         name = new AtomicReference<>();
         isConsole = new AtomicBoolean(false);
         morseCipherPath = new AtomicReference<>(DEFAULT_MORSE_CFG_PATH);
         hillCipherPath = new AtomicReference<>(DEFAULT_HILL_CFG_PATH);
+        playfairCipherPath = new AtomicReference<>(DEFAULT_PLAYFAIR_CFG_PATH);
     }
 
     /**
@@ -63,6 +66,22 @@ public class AppConfig {
      */
     public void setHillCipherPath(String hillCipherPath) {
         this.hillCipherPath.set(hillCipherPath);
+    }
+
+    /**
+     * Get the Playfair cipher config path
+     * @return config path
+     */
+    public String getPlayfairCipherPath() {
+        return playfairCipherPath.get();
+    }
+
+    /**
+     * Set the Hill cipher config path
+     * @param hillCipherPath new Hill cipher path
+     */
+    public void setPlayfairCipherPath(String hillCipherPath) {
+        this.playfairCipherPath.set(hillCipherPath);
     }
 
     /**

@@ -11,7 +11,7 @@ import java.io.*;
 public class Hill implements ICrypto {
 
     /**
-     * Decode file that encode with hill cipher
+     * Decode file
      * @param entity contains all information that needed for cipher algorithm
      * @throws IOException
      * @see #encode(io.docencrypting.Entities.CryptoEntity)

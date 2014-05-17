@@ -4,9 +4,9 @@ import java.io.File;
 
 public interface IDataGet {
 
-    public String getFileIn();
+    public File[] getFilesIn();
 
-    public String getFileOut();
+    public File getFileOut();
 
     public String getPassword();
 

@@ -5,6 +5,8 @@ import io.docencrypting.Parser.ArgumentParser;
 import io.docencrypting.UI.Graphical.MainFrame;
 import io.docencrypting.UI.UserInterface;
 
+import javax.swing.*;
+
 public class ApplicationController {
 
     public ApplicationController(String[] args) {

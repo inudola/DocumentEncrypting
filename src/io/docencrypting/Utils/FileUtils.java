@@ -5,36 +5,30 @@ import java.util.Vector;
 
 public class FileUtils {
 
-    public static Vector<File> getFilesFromPath(File path, boolean needHidden) {
+    public static Vector<File> getFilesFromPath(File[] filesIn, boolean needHidden) {
         Vector<File> files = new Vector<>();
-        if (!path.exists()) {
+        if (filesIn.length == 0) {
             return files;
         }
-        if (path.isDirectory() && (!path.isHidden() || needHidden)) {
-            File[] paths = path.listFiles();
-            if (paths == null) {
-                return files;
+        for (File path : filesIn) {
+            if (path.isDirectory() && (!path.isHidden() || needHidden)) {
+                File[] paths = path.listFiles();
+                if (paths == null) {
+                    return files;
+                }
+                for (File file : paths) {
+                    files.addAll(getFilesFromPath(new File[] { file }, needHidden));
+                }
+            } else if (path.isFile() && (!path.isHidden() || needHidden)) {
+                files.add(path);
             }
-            for (File file : paths) {
-                files.addAll(getFilesFromPath(file, needHidden));
-            }
-        } else if (path.isFile() && (!path.isHidden() || needHidden)) {
-            files.add(path);
         }
         return files;
     }
 
-    public static File getFile(String path) {
-        File file = null;
-        if (path == null || path.isEmpty()) {
-            return null;
-        }
-        try {
-            file = new File(path);
-        } catch (Exception ex) {
-            //TODO add log message
-        }
-        if (file != null && !file.exists()) {
+    public static File getPath(File file) {
+        File path = null;
+        if (file == null) {
             return null;
         }
         return file;

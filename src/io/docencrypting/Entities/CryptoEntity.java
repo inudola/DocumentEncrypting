@@ -6,7 +6,7 @@ import java.io.File;
  * Class that contains all information about processing file
  * @see io.docencrypting.Crypto.Morse.Morse
  * @see io.docencrypting.Crypto.Hill.Hill
- * @see io.docencrypting.Crypto.Playfair
+ * @see io.docencrypting.Crypto.Playfair.Playfair
  */
 
 public class CryptoEntity {
