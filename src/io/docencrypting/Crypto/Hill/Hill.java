@@ -1,14 +1,16 @@
 package io.docencrypting.Crypto.Hill;
 
-import io.docencrypting.Crypto.ICrypto;
+import io.docencrypting.Crypto.ICrypt;
 import io.docencrypting.Entities.CryptoEntity;
 import java.io.*;
 
 /**
- * Class that implements Hill cipher
+ * Implements Hill cipher
  */
 
-public class Hill implements ICrypto {
+public class Hill implements ICrypt {
+
+    HillCipher cipher = new HillCipher();   /// Cipher logic
 
     /**
      * Decode file
@@ -43,7 +45,7 @@ public class Hill implements ICrypto {
     }
 
     /**
-     * Method with common code for encode and decode operation
+     * Common logic for encode and decode operation
      * @param entity contains all information that needed for cipher algorithm
      * @param processing function object that convert symbols
      * @throws IOException
@@ -69,7 +71,7 @@ public class Hill implements ICrypto {
                 Matrix phrase = new Matrix(sideSize, 1);
                 for (int j = 0; j < sideSize; j++) {
                     if (i * sideSize + j < length) {
-                        phrase.setElement(j, 0, HillCipher.getNumber(line.charAt(i * sideSize + j)));
+                        phrase.setElement(j, 0, cipher.getNumberHill(line.charAt(i * sideSize + j)));
                     } else {
                         phrase.setElement(j, 0, HillCipher.getSpaceIndex());
                     }
@@ -79,7 +81,7 @@ public class Hill implements ICrypto {
                 Matrix result = passMatrix.multiple(phrase, HillCipher.getModulo());
 
                 for (int j = 0; j < sideSize; j++) {
-                    encodeString.append(HillCipher.getLetter(result.getElement(j, 0)));
+                    encodeString.append(cipher.getLetterHill(result.getElement(j, 0)));
                 }
                 writer.write(encodeString.toString());
             }
@@ -95,7 +97,7 @@ public class Hill implements ICrypto {
         for (int i = 0; i < sideSize; i++) {
             for (int j = 0; j < sideSize; j++) {
                 if (i * sideSize + j < lengthPassword) {
-                    passMatrix.setElement(i, j, HillCipher.getNumber(password.charAt(i * sideSize + j)));
+                    passMatrix.setElement(i, j, cipher.getNumberHill(password.charAt(i * sideSize + j)));
                 } else {
                     passMatrix.setElement(i, j, 0);
                 }
@@ -103,20 +105,6 @@ public class Hill implements ICrypto {
         }
         return passMatrix;
     }
-
-//    public static void main(String[] args) throws IOException {
-//        Hill hill = CryptoFactory.makeHill();
-//        BufferedReader in = new BufferedReader(new InputStreamReader(System.in));
-//        CryptoEntity entity = new CryptoEntity();
-//        File file = new File("/Users/dmitriy/Documents/JavaProject/DocumentEncrypting/text.txt");
-//        entity.setFileIn(file);
-//        entity.setFileOut(new File("/Users/dmitriy/Documents/JavaProject/DocumentEncrypting/Ciphers/textCode.txt"));
-//        entity.setPassword("GYBNQKURP");
-//        hill.encode(entity);
-//        entity.setFileIn(new File("/Users/dmitriy/Documents/JavaProject/DocumentEncrypting/Ciphers/textCode.txt"));
-//        entity.setFileOut(new File("/Users/dmitriy/Documents/JavaProject/DocumentEncrypting/Ciphers/textEncode.txt"));
-//        hill.decode(entity);
-//    }
 
     /**
      * Interface for function object
