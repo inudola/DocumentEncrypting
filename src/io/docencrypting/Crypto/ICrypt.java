@@ -13,7 +13,7 @@ public interface ICrypt {
      * Decode the file that provide {@link io.docencrypting.Entities.CryptoEntity}
      * @param entity contains all information that needed for cipher algorithm
      * @throws IOException
-     * @see #decode(io.docencrypting.Entities.CryptoEntity)
+     * @see #encode(io.docencrypting.Entities.CryptoEntity)
      */
     public void decode(CryptoEntity entity) throws IOException;
 
