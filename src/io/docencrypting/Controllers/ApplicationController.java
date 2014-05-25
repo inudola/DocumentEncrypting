@@ -2,6 +2,7 @@ package io.docencrypting.Controllers;
 
 import io.docencrypting.Config.AppConfig;
 import io.docencrypting.Parser.ArgumentParser;
+import io.docencrypting.UI.Console.Console;
 import io.docencrypting.UI.Graphical.MainFrame;
 import io.docencrypting.UI.UserInterface;
 
@@ -18,6 +19,7 @@ public class ApplicationController {
         UserInterface userInterface;
         if (appConfig.isConsole()) {
             System.out.println("Cnsl");
+
         } else {
             System.out.println("Frame");
             new MainFrame().setVisible(true);

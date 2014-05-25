@@ -118,6 +118,8 @@ public class MainFrame extends JFrame implements IDataGet, UserInterface {
             }
         });
 
+
+
         decryptButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
@@ -128,6 +130,31 @@ public class MainFrame extends JFrame implements IDataGet, UserInterface {
                 }
             }
         });
+
+        settingsButton.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                SettingsFrame settingsFrame = new SettingsFrame();
+            }
+        });
+
+
+        typeComboBox.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                if(typeComboBox.getSelectedItem().equals(EncryptingKinds.Morse))
+                {
+                    passwordField.setVisible(false);
+                    passwordLabel.setVisible(false);
+                }
+                else
+                {
+                    passwordField.setVisible(true);
+                    passwordLabel.setVisible(true);
+                }
+            }
+        });
+
 
         centerFrame();
         setContentPane(box);

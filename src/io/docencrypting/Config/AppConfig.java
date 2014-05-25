@@ -1,5 +1,6 @@
 package io.docencrypting.Config;
 
+import javax.swing.*;
 import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.concurrent.atomic.AtomicReference;
 
@@ -19,6 +20,43 @@ public class AppConfig {
     private AtomicReference<String> morseCipherPath;/// Path of Morse cipher
     private AtomicReference<String> hillCipherPath; /// Path of Hill cipher
     private AtomicReference<String> playfairCipherPath;
+
+    private String fileIn;
+    private String fileOut;
+    private String password;
+    private String typeEncrypt;
+
+    public String getFileIn() {
+        return fileIn;
+    }
+
+    public void setFileIn(String fileIn) {
+        this.fileIn = fileIn;
+    }
+
+    public String getFileOut() {
+        return fileOut;
+    }
+
+    public void setFileOut(String fileOut) {
+        this.fileOut = fileOut;
+    }
+
+    public String getPassword() {
+        return password;
+    }
+
+    public void setPassword(String password) {
+        this.password = password;
+    }
+
+    public String getTypeEncrypt() {
+        return typeEncrypt;
+    }
+
+    public void setTypeEncrypt(String typeEncrypt) {
+        this.typeEncrypt = typeEncrypt;
+    }
 
     private AppConfig() {
         name = new AtomicReference<>();
