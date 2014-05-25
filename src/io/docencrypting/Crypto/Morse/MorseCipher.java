@@ -1,6 +1,7 @@
 package io.docencrypting.Crypto.Morse;
 
 import io.docencrypting.Config.AppConfig;
+import io.docencrypting.Crypto.DialogHandler;
 
 import java.io.BufferedReader;
 import java.io.FileReader;
@@ -22,22 +23,25 @@ public class MorseCipher {
         morseToLetter = new HashMap<>();
         BufferedReader reader;
         try {
-            reader = new BufferedReader(new FileReader(AppConfig.getInstance().getMorseCipherPath()));
+            reader = new BufferedReader(new FileReader(AppConfig.DEFAULT_MORSE_CFG_PATH));
         } catch (Exception ex) {
-            throw new MorseCipherNotLoadException();
+            throw new MorseCipherNotLoadException("Don't find " + AppConfig.DEFAULT_MORSE_CFG_PATH);
         }
         String str;
         try {
             while ((str = reader.readLine()) != null) {
                 String[] tokens = str.split("#");
-                for (int i = 0; i < tokens.length - 1; i++) {
-                    letterToMorse.put(tokens[i], tokens[tokens.length - 1]);
+                int lastIndex = tokens.length - 1;
+                for (int i = 0; i < lastIndex; i++) {
+                    if (lastIndex > 0 && lastIndex < tokens.length)
+                        letterToMorse.put(tokens[i], tokens[lastIndex]);
                 }
-                morseToLetter.put(tokens[tokens.length - 1], tokens[0]);
+                if (lastIndex > 0 && lastIndex < tokens.length)
+                    morseToLetter.put(tokens[lastIndex], tokens[0]);
             }
             reader.close();
         } catch (IOException ex) {
-            throw new MorseCipherNotLoadException();
+            throw new MorseCipherNotLoadException(AppConfig.DEFAULT_MORSE_CFG_PATH + " don't read");
         }
 
     }
@@ -47,9 +51,9 @@ public class MorseCipher {
      * @param letter letter for convert
      * @return morse sequence
      */
-    public String getMorse(String letter) {
+    public String getMorse(String letter, DialogHandler handler) {
         String morse = letterToMorse.get(letter);
-        if (morse == null) {
+        if (morse == null && handler.show("Symbol don't find\nSkip this?", "Error")) {
             morse = letterToMorse.get(DIVIDER);
         }
         return morse;

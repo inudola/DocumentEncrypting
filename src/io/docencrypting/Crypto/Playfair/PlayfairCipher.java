@@ -1,6 +1,7 @@
 package io.docencrypting.Crypto.Playfair;
 
 import io.docencrypting.Config.AppConfig;
+import io.docencrypting.Crypto.DialogHandler;
 import io.docencrypting.Crypto.Hill.HillCipherNotLoadException;
 
 import java.io.BufferedReader;
@@ -37,9 +38,10 @@ public class PlayfairCipher {
     private void fillAlphabet() {
         BufferedReader reader;
         try {
-            reader = new BufferedReader(new FileReader(AppConfig.getInstance().getPlayfairCipherPath()));
-        } catch (Exception ex) {
-            throw new HillCipherNotLoadException();
+            reader = new BufferedReader(new FileReader(AppConfig.DEFAULT_PLAYFAIR_CFG_PATH));
+        } catch (IOException ex) {
+            throw new PlayfairCipherNotLoadException("Don't find " +
+                    AppConfig.DEFAULT_PLAYFAIR_CFG_PATH);
         }
         String str;
         try {
@@ -47,7 +49,7 @@ public class PlayfairCipher {
                 alphabet.add(str.charAt(0));
             }
         } catch (IOException e) {
-            throw new PlayfairCipherNotLoadException();
+            throw new PlayfairCipherNotLoadException(AppConfig.DEFAULT_PLAYFAIR_CFG_PATH + " don't read");
         }
     }
 
@@ -70,14 +72,13 @@ public class PlayfairCipher {
                 counter++;
             }
         }
-        System.out.println(keyMatrix);
         return keyMatrix;
     }
 
     public Vector<Character> modifyText(String text) {
         Vector<Character> modifiedText = new Vector<>();
         for (int i = 0; i < text.length(); i++) {
-            if (!modifiedText.isEmpty() && i % 2 != 0 &&modifiedText.lastElement().equals(text.charAt(i)))
+            if (!modifiedText.isEmpty() && i % 2 != 0 && modifiedText.lastElement().equals(text.charAt(i)))
                 modifiedText.add('Q');
             modifiedText.add(text.charAt(i));
         }
@@ -118,12 +119,16 @@ public class PlayfairCipher {
         return alphabet.contains(character);
     }
 
-    public String processLine(String line) {
+    public String processLine(String line, DialogHandler handler) {
         line = line.toUpperCase();
         StringBuilder builder = new StringBuilder();
         for (Character character : line.toCharArray()) {
             if (contains(character) || character ==  ' ') {
                 builder.append(character);
+            } else {
+                if (!handler.show("Symbol don't find\nSkip this?", "Error")) {
+                    return null;
+                }
             }
         }
         return builder.toString();

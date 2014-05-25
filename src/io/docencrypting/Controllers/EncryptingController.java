@@ -1,7 +1,7 @@
 package io.docencrypting.Controllers;
 
 import io.docencrypting.Crypto.EncryptingKinds;
-import io.docencrypting.Entities.CryptoEntity;
+import io.docencrypting.Entities.CryptEntity;
 import io.docencrypting.UI.IDataGet;
 import io.docencrypting.Utils.FileUtils;
 
@@ -26,24 +26,23 @@ public class EncryptingController {
         if (files.length == 0) {
             return false;
         }
+        boolean answer = false;
         Vector<File> fileVector = FileUtils.getFilesFromPath(files, view.getNeedHiddenFiles());
         for (File file : fileVector) {
-            System.out.println(file.getAbsolutePath());
-            CryptoEntity cryptoEntity = createCryptoEntity(file, new IGetFileOut() {
+            CryptEntity cryptEntity = createCryptEntity(file, new IGetFileOut() {
                 @Override
                 public File getFileOut(String name, File fileIn) {
                     return new File(view.getFileOut(), "Encrypt_" + name + "_" + fileIn.getName());
                 }
             });
-            System.out.println(cryptoEntity.getFileOut().getAbsolutePath());
-            if (cryptoEntity == null) {
+            if (cryptEntity == null) {
                 return false;
             }
-            if (cryptoEntity.getName() != null && !cryptoEntity.getName().isEmpty()) {
-                EncryptingKinds.valueOf(cryptoEntity.getName()).getCrypt().encode(cryptoEntity);
+            if (cryptEntity.getName() != null && !cryptEntity.getName().isEmpty()) {
+                answer = EncryptingKinds.valueOf(cryptEntity.getName()).getCrypt().encode(cryptEntity);
             }
         }
-        return true;
+        return answer;
     }
 
     public boolean decrypt() throws  IOException {
@@ -53,28 +52,26 @@ public class EncryptingController {
         }
         Vector<File> fileVector = FileUtils.getFilesFromPath(files, view.getNeedHiddenFiles());
         for (File file : fileVector) {
-            System.out.println(file.getAbsolutePath());
-            CryptoEntity cryptoEntity = createCryptoEntity(file, new IGetFileOut() {
+            CryptEntity cryptEntity = createCryptEntity(file, new IGetFileOut() {
                 @Override
                 public File getFileOut(String name, File fileIn) {
                     return new File(view.getFileOut(), "Decrypt_" + name + "_" + fileIn.getName().substring(
                             fileIn.getName().lastIndexOf('_') + 1, fileIn.getName().length()));
                 }
             });
-            if (cryptoEntity == null) {
+            if (cryptEntity == null) {
                 return false;
             }
-            System.out.println(cryptoEntity.getFileOut().getAbsolutePath());
 
-            if (cryptoEntity.getName() != null && !cryptoEntity.getName().isEmpty()) {
-                EncryptingKinds.valueOf(cryptoEntity.getName()).getCrypt().decode(cryptoEntity);
+            if (cryptEntity.getName() != null && !cryptEntity.getName().isEmpty()) {
+                EncryptingKinds.valueOf(cryptEntity.getName()).getCrypt().decode(cryptEntity);
             }
         }
         return true;
     }
 
-    public CryptoEntity createCryptoEntity(File fileIn, IGetFileOut fileOutGetter) {
-        CryptoEntity cryptoEntity = new CryptoEntity();
+    public CryptEntity createCryptEntity(File fileIn, IGetFileOut fileOutGetter) {
+        CryptEntity cryptEntity = new CryptEntity();
 //        File fileIn;
         File fileOut;
         String password = null;
@@ -92,13 +89,14 @@ public class EncryptingController {
         }
         fileOut = fileOutGetter.getFileOut(name, fileIn);
         needHidden = view.getNeedHiddenFiles();
+        cryptEntity.setDialogHandler(view.getDialogHandler());
 
-        cryptoEntity.setName(name);
-        cryptoEntity.setNeedHiddenFiles(needHidden);
-        cryptoEntity.setFileIn(fileIn);
-        cryptoEntity.setFileOut(fileOut);
-        cryptoEntity.setPassword(password);
-        return cryptoEntity;
+        cryptEntity.setName(name);
+        cryptEntity.setNeedHiddenFiles(needHidden);
+        cryptEntity.setFileIn(fileIn);
+        cryptEntity.setFileOut(fileOut);
+        cryptEntity.setPassword(password);
+        return cryptEntity;
     }
 
     private interface IGetFileOut {

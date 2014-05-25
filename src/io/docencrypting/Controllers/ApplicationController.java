@@ -10,13 +10,17 @@ import javax.swing.*;
 
 public class ApplicationController {
 
+    String[] args;
+
     public ApplicationController(String[] args) {
-        ArgumentParser.parse(args);     /// parsing configurations from command line arguments
+        this.args = args;
     }
 
     public void run() {
+        ArgumentParser.parse(args);
         AppConfig appConfig = AppConfig.getInstance();
         UserInterface userInterface;
+        System.out.println("Is console" + appConfig.isConsole());
         if (appConfig.isConsole()) {
             System.out.println("Cnsl");
 

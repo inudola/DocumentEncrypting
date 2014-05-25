@@ -1,5 +1,7 @@
 package io.docencrypting.UI;
 
+import io.docencrypting.Crypto.DialogHandler;
+
 import java.io.File;
 
 public interface IDataGet {
@@ -13,5 +15,7 @@ public interface IDataGet {
     public boolean getNeedHiddenFiles();
 
     public String getNameEncryptingAlgorithm();
+
+    public DialogHandler getDialogHandler();
 
 }

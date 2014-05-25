@@ -1,7 +1,7 @@
 package io.docencrypting.Crypto.Morse;
 
 import io.docencrypting.Crypto.ICrypt;
-import io.docencrypting.Entities.CryptoEntity;
+import io.docencrypting.Entities.CryptEntity;
 
 import java.io.*;
 
@@ -17,10 +17,10 @@ public class Morse implements ICrypt {
      * Decode file
      * @param entity contains all information that needed for cipher algorithm
      * @throws IOException
-     * @see #encode(io.docencrypting.Entities.CryptoEntity)
+     * @see #encode(io.docencrypting.Entities.CryptEntity)
      */
     @Override
-    public void decode(CryptoEntity entity) throws IOException {
+    public boolean decode(CryptEntity entity) throws IOException {
         process(entity, new LineProcessing() {
             @Override
             public String perform(String line) {
@@ -31,22 +31,27 @@ public class Morse implements ICrypt {
                 return builder.toString();
             }
         });
+        return true;
     }
 
     /**
      * Encode file with Hill cipher
      * @param entity contains all information that needed for cipher algorithm
      * @throws IOException
-     * @see #decode(io.docencrypting.Entities.CryptoEntity)
+     * @see #decode(io.docencrypting.Entities.CryptEntity)
      */
     @Override
-    public void encode(CryptoEntity entity) throws IOException {
-        process(entity, new LineProcessing() {
+    public boolean encode(final CryptEntity entity) throws IOException {
+        return process(entity, new LineProcessing() {
             @Override
             public String perform(String line) {
                 StringBuilder builder = new StringBuilder();
                 for (Character character : line.toUpperCase().toCharArray()) {
-                    builder.append(cipher.getMorse(character.toString()) + " ");
+                    String morse = cipher.getMorse(character.toString(), entity.getDialogHandler());
+                    if (morse == null) {
+                        return null;
+                    }
+                    builder.append(morse + " ");
                 }
                 return builder.toString();
             }
@@ -59,18 +64,25 @@ public class Morse implements ICrypt {
      * @param processing function object that convert symbols
      * @throws IOException
      */
-    private void process(CryptoEntity entity, LineProcessing processing) throws IOException {
+    private boolean process(CryptEntity entity, LineProcessing processing) throws IOException {
         File fileIn = entity.getFileIn();
         File fileOut = entity.getFileOut();
+        File temp = File.createTempFile("temp", "txt");
         BufferedReader reader = new BufferedReader(new FileReader(fileIn));
-        BufferedWriter writer = new BufferedWriter(new FileWriter(fileOut));
+        BufferedWriter writer = new BufferedWriter(new FileWriter(temp));
         String line;
         while ((line = reader.readLine()) != null) {
-            writer.write(processing.perform(line));
+            String text = processing.perform(line);
+            if (text == null) {
+                return false;
+            }
+            writer.write(text);
             writer.newLine();
         }
         reader.close();
         writer.close();
+        temp.renameTo(fileOut);
+        return true;
     }
 
 

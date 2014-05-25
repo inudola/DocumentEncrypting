@@ -1,6 +1,7 @@
 package io.docencrypting.Crypto;
 
-import io.docencrypting.Entities.CryptoEntity;
+import io.docencrypting.Entities.CryptEntity;
+
 import java.io.IOException;
 
 /**
@@ -10,19 +11,19 @@ import java.io.IOException;
 public interface ICrypt {
 
     /**
-     * Decode the file that provide {@link io.docencrypting.Entities.CryptoEntity}
+     * Decode the file that provide {@link io.docencrypting.Entities.CryptEntity}
      * @param entity contains all information that needed for cipher algorithm
      * @throws IOException
-     * @see #encode(io.docencrypting.Entities.CryptoEntity)
+     * @see #encode(io.docencrypting.Entities.CryptEntity)
      */
-    public void decode(CryptoEntity entity) throws IOException;
+    public boolean decode(CryptEntity entity) throws IOException;
 
     /**
-     * Encode the file that provide {@link io.docencrypting.Entities.CryptoEntity}
+     * Encode the file that provide {@link io.docencrypting.Entities.CryptEntity}
      * @param entity contains all information that needed for cipher algorithm
      * @throws IOException
-     * @see #decode(io.docencrypting.Entities.CryptoEntity)
+     * @see #decode(io.docencrypting.Entities.CryptEntity)
      */
-    public void encode(CryptoEntity entity) throws IOException;
+    public boolean encode(CryptEntity entity) throws IOException;
 
 }

@@ -1,7 +1,7 @@
 package io.docencrypting.Crypto.Playfair;
 
 import io.docencrypting.Crypto.ICrypt;
-import io.docencrypting.Entities.CryptoEntity;
+import io.docencrypting.Entities.CryptEntity;
 
 import java.io.*;
 import java.util.Vector;
@@ -24,22 +24,24 @@ public class Playfair implements ICrypt {
     }
 
     @Override
-    public void decode(CryptoEntity entity) throws IOException {
+    public boolean decode(CryptEntity entity) throws IOException {
         PlayfairCipher cipher = new PlayfairCipher();
         File fileIn = entity.getFileIn();
         File fileOut = entity.getFileOut();
+        File temp = File.createTempFile("temp", "txt");
         String password = entity.getPassword();
         cipher.fillKeyMatrix(password);
 
         BufferedReader reader = new BufferedReader(new FileReader(fileIn));
-        BufferedWriter writer = new BufferedWriter(new FileWriter(fileOut));
+        BufferedWriter writer = new BufferedWriter(new FileWriter(temp));
         String line;
         while ((line = reader.readLine()) != null) {
-            line = cipher.processLine(line);
-            System.out.println(line);
+            line = cipher.processLine(line, entity.getDialogHandler());
+            if (line == null) {
+                return false;
+            }
             for (String word : line.split(" ")) {
                 Vector<String> pairs = cipher.createPairArray(cipher.modifyText(word));
-                System.out.println(pairs);
                 StringBuilder encodeText = new StringBuilder();
                 for (String pair : pairs) {
 
@@ -84,32 +86,35 @@ public class Playfair implements ICrypt {
         }
         reader.close();
         writer.close();
+        temp.renameTo(fileOut);
+        return true;
     }
 
     @Override
-    public void encode(CryptoEntity entity) throws IOException {
+    public boolean encode(CryptEntity entity) throws IOException {
         PlayfairCipher cipher = new PlayfairCipher();
         File fileIn = entity.getFileIn();
         File fileOut = entity.getFileOut();
+        File temp = File.createTempFile("temp", "txt");
         String password = entity.getPassword();
         cipher.fillKeyMatrix(password);
 
         BufferedReader reader = new BufferedReader(new FileReader(fileIn));
-        BufferedWriter writer = new BufferedWriter(new FileWriter(fileOut));
+        BufferedWriter writer = new BufferedWriter(new FileWriter(temp));
         String line;
         while ((line = reader.readLine()) != null) {
-            line = cipher.processLine(line);
-            System.out.println(line);
+            /*entity.getDialogHandler().show("Symbol don't find\nSkip this?", "Error")*/
+            line = cipher.processLine(line, entity.getDialogHandler());
+            if (line == null) {
+                return false;
+            }
             for (String word : line.split(" ")) {
                 Vector<String> pairs = cipher.createPairArray(cipher.modifyText(word));
-                System.out.println(pairs);
                 StringBuilder encodeText = new StringBuilder();
                 for (String pair : pairs) {
 
                     Pair coordFirstCharacter  = cipher.getCoordinate(pair.charAt(0));
                     Pair coordSecondCharacter = cipher.getCoordinate(pair.charAt(1));
-
-                    if (coordFirstCharacter == null || coordSecondCharacter == null) continue;
 
                     if (coordFirstCharacter.x == coordSecondCharacter.x) {
                         if (coordFirstCharacter.x < 4) {
@@ -148,34 +153,8 @@ public class Playfair implements ICrypt {
         }
         reader.close();
         writer.close();
-    }
-
-
-
-    public static void main(String[] args) {
-        Playfair cipher = new Playfair();
-//        System.out.println(cipher.fillKeyMatrix("BADY"));
-//        System.out.println(cipher.getCoordinate('Q').toString());
-//        System.out.println(cipher.modifyText("BAAD"));
-//        System.out.println(cipher.createPairArray(cipher.modifyText("BAAD")));
-        CryptoEntity entity = new CryptoEntity();
-        entity.setFileIn(new File("/Users/dmitriy/Documents/JavaProject/DocumentEncrypting/text.txt"));
-        entity.setFileOut(new File("/Users/dmitriy/Documents/JavaProject/DocumentEncrypting/text_playfair.txt"));
-        entity.setPassword("GYBNQKURP");
-        try {
-            cipher.encode(entity);
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-
-        entity.setFileIn(new File("/Users/dmitriy/Documents/JavaProject/DocumentEncrypting/text_playfair.txt"));
-        entity.setFileOut(new File("/Users/dmitriy/Documents/JavaProject/DocumentEncrypting/text_encrypt.txt"));
-
-        try {
-            cipher.decode(entity);
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
+        temp.renameTo(fileOut);
+        return true;
     }
 
 }

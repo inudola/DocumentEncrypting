@@ -11,8 +11,8 @@ import java.util.HashMap;
  */
 public class HillCipher {
 
-    private static String SPACE = " ";  /// Space character
-    private static int SPACE_INDEX = 0; /// Index of space character
+    public static String SPACE = " ";  /// Space character
+    public static int SPACE_INDEX = 0; /// Index of space character
     private static HashMap<Integer, Character> integerToString = null;  /// Contains that replacement
     private static HashMap<Character, Integer> stringToInteger = null;  /// Contains that replacement
 
@@ -68,10 +68,8 @@ public class HillCipher {
      * @param character letter
      * @return index
      */
-    public int getNumberHill(Character character) {
-        return stringToInteger.keySet().contains(character)
-                ? stringToInteger.get(character)
-                : SPACE_INDEX;
+    public Integer getNumberHill(Character character) {
+        return stringToInteger.get(character);
     }
 
     /**
@@ -80,9 +78,9 @@ public class HillCipher {
     private void fillHashMaps() {
         BufferedReader reader;
         try {
-            reader = new BufferedReader(new FileReader(AppConfig.getInstance().getHillCipherPath()));
+            reader = new BufferedReader(new FileReader(AppConfig.DEFAULT_HILL_CFG_PATH));
         } catch (Exception ex) {
-            throw new HillCipherNotLoadException();
+            throw new HillCipherNotLoadException("Don't find " + AppConfig.DEFAULT_HILL_CFG_PATH);
         }
         int count = 0;
         String str;
@@ -98,7 +96,7 @@ public class HillCipher {
             stringToInteger.put(' ', count);
             SPACE_INDEX = count;
         } catch (IOException e) {
-            throw new HillCipherNotLoadException();
+            throw new HillCipherNotLoadException(AppConfig.DEFAULT_HILL_CFG_PATH + " don't read");
         }
     }
 

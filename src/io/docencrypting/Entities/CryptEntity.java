@@ -1,5 +1,6 @@
 package io.docencrypting.Entities;
 
+import io.docencrypting.Crypto.DialogHandler;
 import java.io.File;
 
 /**
@@ -9,13 +10,14 @@ import java.io.File;
  * @see io.docencrypting.Crypto.Playfair.Playfair
  */
 
-public class CryptoEntity {
+public class CryptEntity {
 
-    private String name = null;             /// Name of cipher algorithm
-    private File fileIn = null;             /// Input file
-    private File fileOut = null;            /// Output file
-    private String password = null;         /// Password for cipher algorithm (not for all)
-    private boolean needHiddenFiles = false;/// If need processing hidden files
+    private String name = null;                     /// Name of cipher algorithm
+    private File fileIn = null;                     /// Input file
+    private File fileOut = null;                    /// Output file
+    private String password = null;                 /// Password for cipher algorithm (not for all)
+    private boolean needHiddenFiles = false;        /// If need processing hidden files
+    private DialogHandler dialogHandler = null;     /// Handle message
 
     /**
      * Get name of cipher algorithm
@@ -106,4 +108,23 @@ public class CryptoEntity {
     public void setPassword(String password) {
         this.password = password;
     }
+
+    /**
+     * Get handler
+     * @return handler
+     * @see #setDialogHandler(io.docencrypting.Crypto.DialogHandler)
+     */
+    public DialogHandler getDialogHandler() {
+        return dialogHandler;
+    }
+
+    /**
+     * Set handler
+     * @param dialogHandler handler
+     * @see #getDialogHandler()
+     */
+    public void setDialogHandler(DialogHandler dialogHandler) {
+        this.dialogHandler = dialogHandler;
+    }
+
 }

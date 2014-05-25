@@ -1,7 +1,9 @@
 package io.docencrypting.Crypto.Hill;
 
 import io.docencrypting.Crypto.ICrypt;
-import io.docencrypting.Entities.CryptoEntity;
+import io.docencrypting.Crypto.Playfair.PlayfairCipher;
+import io.docencrypting.Entities.CryptEntity;
+
 import java.io.*;
 
 /**
@@ -16,11 +18,11 @@ public class Hill implements ICrypt {
      * Decode file
      * @param entity contains all information that needed for cipher algorithm
      * @throws IOException
-     * @see #encode(io.docencrypting.Entities.CryptoEntity)
+     * @see #encode(io.docencrypting.Entities.CryptEntity)
      */
     @Override
-    public void decode(CryptoEntity entity) throws IOException {
-        process(entity, new LineProcessing() {
+    public boolean decode(CryptEntity entity) throws IOException {
+        return process(entity, new LineProcessing() {
             @Override
             public Matrix createMagicMatrix(int lengthPassword, int sideSize, String password) {
                 return createPasswordMatrix(lengthPassword, sideSize, password).inverse(HillCipher.getModulo());
@@ -32,11 +34,11 @@ public class Hill implements ICrypt {
      * Encode file with Hill cipher
      * @param entity contains all information that needed for cipher algorithm
      * @throws IOException
-     * @see #decode(io.docencrypting.Entities.CryptoEntity)
+     * @see #decode(io.docencrypting.Entities.CryptEntity)
      */
     @Override
-    public void encode(CryptoEntity entity) throws IOException {
-        process(entity, new LineProcessing() {
+    public boolean encode(CryptEntity entity) throws IOException {
+        return process(entity, new LineProcessing() {
             @Override
             public Matrix createMagicMatrix(int lengthPassword, int sideSize, String password) {
                 return createPasswordMatrix(lengthPassword, sideSize, password);
@@ -50,9 +52,10 @@ public class Hill implements ICrypt {
      * @param processing function object that convert symbols
      * @throws IOException
      */
-    private void process(CryptoEntity entity, LineProcessing processing) throws IOException {
+    private boolean process(CryptEntity entity, LineProcessing processing) throws IOException {
         File fileIn = entity.getFileIn();
         File fileOut = entity.getFileOut();
+        File temp = File.createTempFile("temp", "txt");
         String password = entity.getPassword();
 
         int lengthPassword = password.length();
@@ -61,7 +64,7 @@ public class Hill implements ICrypt {
         Matrix passMatrix = processing.createMagicMatrix(lengthPassword, sideSize, password);
 
         BufferedReader reader = new BufferedReader(new FileReader(fileIn));
-        BufferedWriter writer = new BufferedWriter(new FileWriter(fileOut));
+        BufferedWriter writer = new BufferedWriter(new FileWriter(temp));
         String line;
         while ((line = reader.readLine()) != null) {
             int length = line.length();
@@ -71,7 +74,15 @@ public class Hill implements ICrypt {
                 Matrix phrase = new Matrix(sideSize, 1);
                 for (int j = 0; j < sideSize; j++) {
                     if (i * sideSize + j < length) {
-                        phrase.setElement(j, 0, cipher.getNumberHill(line.charAt(i * sideSize + j)));
+                        Integer number = cipher.getNumberHill(line.charAt(i * sideSize + j));
+                        if (number == null) {
+                            if (entity.getDialogHandler().show("Symbol don't find\nSkip this?", "Error")) {
+                                number = HillCipher.SPACE_INDEX;
+                            } else {
+                                return false;
+                            }
+                        }
+                        phrase.setElement(j, 0, number);
                     } else {
                         phrase.setElement(j, 0, HillCipher.getSpaceIndex());
                     }
@@ -90,6 +101,9 @@ public class Hill implements ICrypt {
         }
         reader.close();
         writer.close();
+
+        temp.renameTo(fileOut);
+        return true;
     }
 
     private Matrix createPasswordMatrix(int lengthPassword, int sideSize, String password) {

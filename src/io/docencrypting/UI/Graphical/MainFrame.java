@@ -1,6 +1,7 @@
 package io.docencrypting.UI.Graphical;
 
 import io.docencrypting.Controllers.EncryptingController;
+import io.docencrypting.Crypto.DialogHandler;
 import io.docencrypting.Crypto.EncryptingKinds;
 import io.docencrypting.UI.IDataGet;
 import io.docencrypting.UI.UserInterface;
@@ -35,6 +36,22 @@ public class MainFrame extends JFrame implements IDataGet, UserInterface {
 
     EncryptingController encryptingController;
 
+    DialogHandler handler;
+
+    private void createDialogHandler() {
+        handler = new DialogHandler() {
+            @Override
+            public boolean show(String message, String title) {
+                if (!getNeedChange().equals(Type.NOT_ANSWER)) {
+                    return isNeedChange();
+                }
+                int answer = JOptionPane.showConfirmDialog(null, message, title, JOptionPane.YES_NO_OPTION);
+                this.setNeedChange(answer == JOptionPane.YES_OPTION ? DialogHandler.Type.YES : Type.NO);
+                return isNeedChange();
+            }
+        };
+    }
+
     public MainFrame() throws HeadlessException {
         encryptingController = new EncryptingController();
         encryptingController.setView(this);
@@ -45,7 +62,6 @@ public class MainFrame extends JFrame implements IDataGet, UserInterface {
     @Override
     public File[] getFilesIn() {
         return fileInChooser.getSelectedFiles();
-
     }
 
     @Override
@@ -61,6 +77,11 @@ public class MainFrame extends JFrame implements IDataGet, UserInterface {
     @Override
     public boolean getNeedHiddenFiles() {
         return hiddenCheckBox.isSelected();
+    }
+
+    @Override
+    public DialogHandler getDialogHandler() {
+        return handler;
     }
 
     @Override
@@ -111,6 +132,7 @@ public class MainFrame extends JFrame implements IDataGet, UserInterface {
             @Override
             public void actionPerformed(ActionEvent e) {
                 try {
+                    createDialogHandler();
                     encryptingController.encryptWith();
                 } catch (IOException ex) {
                     JOptionPane.showMessageDialog(null, ex.getLocalizedMessage());
