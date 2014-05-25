@@ -76,14 +76,35 @@ public class PlayfairCipher {
 
     public Vector<Character> modifyText(String text) {
         Vector<Character> modifiedText = new Vector<>();
-        for (Character character : text.toCharArray()) {
-            if (!modifiedText.isEmpty() && modifiedText.lastElement().equals(character))
+        for (int i = 0; i < text.length(); i++) {
+            if (!modifiedText.isEmpty() && i % 2 != 0 &&modifiedText.lastElement().equals(text.charAt(i)))
                 modifiedText.add('Q');
-            modifiedText.add(character);
+            modifiedText.add(text.charAt(i));
         }
         if (modifiedText.size() % 2 != 0)
             modifiedText.add('Q');
         return modifiedText;
+    }
+
+    public String simplifyText(String text) {
+        StringBuilder builder = new StringBuilder();
+        for (int i = 0; i < text.length(); i++) {
+            if (i < text.length() - 2 && text.charAt(i) == text.charAt(i + 2) && text.charAt(i+1) == 'Q') {
+                builder.append(text.charAt(i));
+                i++;
+                continue;
+            }
+            if (i < text.length() - 1 && text.charAt(i) == text.charAt(i+1) && text.charAt(i) == 'Q') {
+                builder.append(text.charAt(i));
+                i++;
+                continue;
+            }
+            builder.append(text.charAt(i));
+        }
+        if (builder.length() > 0 && builder.charAt(builder.length() - 1) == 'Q') {
+            builder.deleteCharAt(builder.length() - 1);
+        }
+        return builder.toString();
     }
 
     public Vector<String> createPairArray(Vector<Character> text) {

@@ -7,7 +7,7 @@ import java.io.IOException;
  * Provide interface for all cipher algorithms
  */
 
-public interface ICrypto {
+public interface ICrypt {
 
     /**
      * Decode the file that provide {@link io.docencrypting.Entities.CryptoEntity}

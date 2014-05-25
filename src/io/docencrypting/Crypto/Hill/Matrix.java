@@ -201,29 +201,4 @@ class Matrix {
         return t1 + t2;
     }
 
-//    public static void main(String[] args) {
-//        Matrix firstMatrix = new Matrix(3, 3);
-//        Matrix secondMatrix = new Matrix(3, 1);
-//        for (int i = 0; i < firstMatrix.getRows(); i++) {
-//            for (int j = 0; j < firstMatrix.getColumns(); j++) {
-//                firstMatrix.setElement(i, j, (int)(Math.random()*100));
-//            }
-//        }
-//        show(firstMatrix);
-//        System.out.println("GCD: " + firstMatrix.greatestCommonDivisor(26));
-//        if (firstMatrix.greatestCommonDivisor(26) > 1) {
-//            System.out.println("Invalid key");
-//            System.exit(1);
-//        }
-//        secondMatrix.setElement(0, 0, 3);
-//        secondMatrix.setElement(1, 0, 14);
-//        secondMatrix.setElement(2, 0, 6);
-//        show(secondMatrix);
-//        Matrix cipher = firstMatrix.multiple(secondMatrix, 26);
-//        show(cipher);
-//        Matrix result = firstMatrix.inverse(26);//.multiple(firstMatrix.determinant()%26);//.multiple(firstMatrix.determinant()%41)/*multiple(secondMatrix).byModulo(26)*/;
-//        show(result);
-//        Matrix decode = result.multiple(cipher, 26);
-//        show(decode);
-//    }
 }

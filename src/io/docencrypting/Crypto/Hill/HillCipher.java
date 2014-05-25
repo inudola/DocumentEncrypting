@@ -16,39 +16,15 @@ public class HillCipher {
     private static HashMap<Integer, Character> integerToString = null;  /// Contains that replacement
     private static HashMap<Character, Integer> stringToInteger = null;  /// Contains that replacement
 
-    private HillCipher() {
+    /**
+     * Initialize hashmaps
+     */
+    public HillCipher() {
         integerToString = new HashMap<>();
         stringToInteger = new HashMap<>();
         fillHashMaps();
     }
 
-    /**
-     * Get instance
-     * @return instance
-     */
-    public static HillCipher getInstance() {
-        return HillHolder.HILL_CIPHER;
-    }
-
-    /**
-     * Get letter from number
-     * @param number number
-     * @return Letter
-     * @see #getNumber(Character)
-     */
-    public static synchronized String getLetter(Integer number) {
-        return getInstance().getLetterHill(number);
-    }
-
-    /**
-     * Get number from letter
-     * @param character letter
-     * @return letter
-     * @see #getLetter(Integer)
-     */
-    public static synchronized Integer getNumber(Character character) {
-        return getInstance().getNumberHill(character);
-    }
 
     /**
      * Get modulo
@@ -80,7 +56,7 @@ public class HillCipher {
      * @param number index of letter
      * @return character
      */
-    private String getLetterHill(Integer number) {
+    public String getLetterHill(Integer number) {
         return integerToString.keySet().contains(number)
                 ? integerToString.get(number).toString()
                 : SPACE;
@@ -92,7 +68,7 @@ public class HillCipher {
      * @param character letter
      * @return index
      */
-    private int getNumberHill(Character character) {
+    public int getNumberHill(Character character) {
         return stringToInteger.keySet().contains(character)
                 ? stringToInteger.get(character)
                 : SPACE_INDEX;
@@ -126,11 +102,5 @@ public class HillCipher {
         }
     }
 
-    /**
-     * Hold Hill instance
-     */
-    private static class HillHolder {
-        public static final HillCipher HILL_CIPHER = new HillCipher();
-    }
 
 }
