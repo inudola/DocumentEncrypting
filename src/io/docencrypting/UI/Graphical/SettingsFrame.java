@@ -40,7 +40,9 @@ public class SettingsFrame extends JFrame {
         save.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-//                  проверочки
+
+                if(wi)
+
 //                setScreenSize(widthScreenField., heightScreenField);
 //                JOptionPane.showMessageDialog(null, "Success!");
             }
