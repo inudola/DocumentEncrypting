@@ -1,6 +1,8 @@
 package io.docencrypting.Utils;
 
+import javax.activation.MimetypesFileTypeMap;
 import java.io.File;
+import java.nio.file.Files;
 import java.util.Vector;
 
 public class FileUtils {
@@ -19,7 +21,8 @@ public class FileUtils {
                 for (File file : paths) {
                     files.addAll(getFilesFromPath(new File[] { file }, needHidden));
                 }
-            } else if (path.isFile() && (!path.isHidden() || needHidden)) {
+            } else if (path.isFile() && (!path.isHidden() || needHidden) &&
+                    new MimetypesFileTypeMap().getContentType(path).equals("text/plain")) {
                 files.add(path);
             }
         }
