@@ -41,7 +41,7 @@ public class SettingsFrame extends JFrame {
             @Override
             public void actionPerformed(ActionEvent e) {
 
-                if(wi)
+                //if(wi)
 
 //                setScreenSize(widthScreenField., heightScreenField);
 //                JOptionPane.showMessageDialog(null, "Success!");
