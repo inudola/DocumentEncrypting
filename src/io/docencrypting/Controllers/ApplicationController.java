@@ -22,8 +22,7 @@ public class ApplicationController {
         UserInterface userInterface;
         System.out.println("Is console" + appConfig.isConsole());
         if (appConfig.isConsole()) {
-            System.out.println("Cnsl");
-
+            new Console();
         } else {
             System.out.println("Frame");
             new MainFrame().setVisible(true);
