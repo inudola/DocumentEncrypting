@@ -1,13 +1,19 @@
 package io.docencrypting.UI.Graphical;
 
 import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger; // обратил внимание?
+import org.apache.logging.log4j.Logger;
 
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.io.File;
+import java.io.*;
+import java.text.NumberFormat;
+import java.util.Scanner;
+
+/**
+ *  Singleton Class that contains common application settings
+ */
 
 
 public class SettingsFrame extends JFrame {
@@ -31,36 +37,34 @@ public class SettingsFrame extends JFrame {
 
     public SettingsFrame() {
 
-        boxSettings.add(BoxCreator.makeLineBox(replace, replaceExistsFileCheck, postfix, postfixField));
+        widthScreenField = new JFormattedTextField(NumberFormat.getInstance());
+        heightScreenField = new JFormattedTextField(NumberFormat.getInstance());
         boxSettings.add(BoxCreator.makeLineBox(screenSize, widthScreenField, x, heightScreenField));
         boxSettings.add(BoxCreator.makeLineBox(save, cancel));
 
-
+        String arSettings = getSettings();
+        String[] arraySettings = arSettings.split("\n");
+        String width = arraySettings[0];
+        String height = arraySettings[1];
+        widthScreenField.setText(width);
+        heightScreenField.setText(height);
 
         save.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                logger.debug("Start processing");
+                logger.debug("Centralization of the dialog box");
                 try {
-                    if(widthScreenField.getText().equals("") && heightScreenField.getText().equals(""))
-                    {
+                    if (widthScreenField.getText() != "" && heightScreenField.getText() != "") {
                         setScreenSize(widthScreenField.getText(), heightScreenField.getText());
-                    }
-                    if(replaceExistsFileCheck.isSelected())
-                    {
-                        if(postfixField.getText().equals(""))
-                        {
-
-                        }
                     }
                 } catch (Exception ex) {
                     logger.error("Something failed", e);
                 }
                 JOptionPane.showMessageDialog(null, "Success!");
-                logger.debug("done");
+                logger.debug("Done");
             }
         });
-//это удалить надо
+
         cancel.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
@@ -82,9 +86,44 @@ public class SettingsFrame extends JFrame {
     }
 
     public static void  setScreenSize(String width, String height){
-        File filesettings = new File("settings.txt");
-        //log.write("string");
+        FileWriter writeFile = null;
+        try {
+            File sFile = new File("settings.txt");
+            writeFile = new FileWriter(sFile);
+            writeFile.write(width + "\n");
+            writeFile.write(height + "\n");
+        } catch (IOException e) {
+            e.printStackTrace();
+        } finally {
+            if(writeFile != null) {
+                try {
+                    writeFile.close();
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+            }
+        }
+    }
 
+    public static String getSettings()
+    {
+        File file = new File("settings.txt");
+        StringBuilder sb = new StringBuilder();
+        try {
+            BufferedReader in = new BufferedReader(new FileReader( file.getAbsoluteFile()));
+            try {
+                String s;
+                while ((s = in.readLine()) != null) {
+                    sb.append(s);
+                    sb.append("\n");
+                }
+            } finally {
+                in.close();
+            }
+        } catch(IOException e) {
+            throw new RuntimeException(e);
+        }
+        return sb.toString();
     }
 
 }

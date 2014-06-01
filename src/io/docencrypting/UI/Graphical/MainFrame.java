@@ -5,15 +5,20 @@ import io.docencrypting.Crypto.DialogHandler;
 import io.docencrypting.Crypto.EncryptingKinds;
 import io.docencrypting.UI.IDataGet;
 import io.docencrypting.UI.UserInterface;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.io.BufferedReader;
 import java.io.File;
+import java.io.FileReader;
 import java.io.IOException;
 
 public class MainFrame extends JFrame implements IDataGet, UserInterface {
+
     JButton fileInButton = new JButton("Upload");
     JButton fileOutButton = new JButton("Save path");
     JButton encryptButton = new JButton("Encrypt");
@@ -31,7 +36,7 @@ public class MainFrame extends JFrame implements IDataGet, UserInterface {
     JLabel typeLabel = new JLabel("Type:");
     JLabel passwordLabel = new JLabel("Password:");
     JLabel hiddenLabel = new JLabel("Hidden:");
-
+    private static final Logger logger = LogManager.getLogger(SettingsFrame.class);
     Box box = new Box(BoxLayout.Y_AXIS);
 
     EncryptingController encryptingController;
@@ -131,12 +136,16 @@ public class MainFrame extends JFrame implements IDataGet, UserInterface {
         encryptButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
+                logger.debug("Encrypting file");
                 try {
                     createDialogHandler();
                     encryptingController.encryptWith();
+                    logger.debug("Encrypting success");
                 } catch (IOException ex) {
+                    logger.error("Encrypting failed");
                     JOptionPane.showMessageDialog(null, ex.getLocalizedMessage());
                 }
+                logger.debug("Encrypting done");
             }
         });
 
@@ -145,11 +154,15 @@ public class MainFrame extends JFrame implements IDataGet, UserInterface {
         decryptButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
+                logger.debug("Dencrypting file");
                 try {
                     encryptingController.decrypt();
+                    logger.debug("Dencrypting success");
                 } catch (IOException ex) {
                     JOptionPane.showMessageDialog(null, ex.getLocalizedMessage());
+                    logger.error("Dencrypting failed");
                 }
+                logger.debug("Dencrypting done");
             }
         });
 
@@ -194,9 +207,42 @@ public class MainFrame extends JFrame implements IDataGet, UserInterface {
 
     public void centerFrame(){
 
-        Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();
-        setSize((int)screenSize.getWidth()/2,(int)screenSize.getHeight()/2);
+        String arSettings = getSettings();
+        String[] arraySettings = arSettings.split("\n");
+        String width = arraySettings[0];
+        String height = arraySettings[1];
+
+        if(width.equals("0") || height.equals("0"))
+        {
+            Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();
+            setSize((int)screenSize.getWidth()/2,(int)screenSize.getHeight()/2);
+        }else
+        {
+            setSize(Integer.parseInt(width), Integer.parseInt(height));
+        }
+
         setLocationRelativeTo(null);
+    }
+
+    public String getSettings()
+    {
+        File file = new File("settings.txt");
+        StringBuilder sb = new StringBuilder();
+        try {
+            BufferedReader in = new BufferedReader(new FileReader( file.getAbsoluteFile()));
+            try {
+                String s;
+                while ((s = in.readLine()) != null) {
+                    sb.append(s);
+                    sb.append("\n");
+                }
+            } finally {
+                in.close();
+            }
+        } catch(IOException e) {
+            throw new RuntimeException(e);
+        }
+        return sb.toString();
     }
 }
 
