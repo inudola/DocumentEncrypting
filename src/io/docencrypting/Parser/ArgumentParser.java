@@ -9,6 +9,7 @@ public class ArgumentParser {
 
     static Vector<String> filesIn;
     static String pathOut;
+    static String password;
 
     public static void parse(String[] args) {
         filesIn = new Vector<>();
@@ -16,7 +17,8 @@ public class ArgumentParser {
 
         System.out.println(args.length);
 
-        for (String arg : args) {
+        for (int i = 0; i < args.length; i++) {
+            String arg = args[i];
             System.out.println(arg);
             switch (arg) {
                 case "-c":
@@ -24,11 +26,17 @@ public class ArgumentParser {
                     appConfig.setConsole(true);
                     break;
                 case "-l":
-                    appConfig.toString();
+                    System.out.println(appConfig.toString());
                     break;
                 case "-h":
-                    System.out.println("Help");
+                     System.out.println("Help");
                     System.exit(0);
+                    break;
+                case "-p":
+                    if (args.length < i + 1)
+                        System.exit(1);
+                    password = args[++i];
+                    System.out.println("Password: " + password);
                     break;
                 default:
                     if (new File(arg).exists()) {
