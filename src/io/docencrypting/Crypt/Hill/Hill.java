@@ -1,7 +1,6 @@
-package io.docencrypting.Crypto.Hill;
+package io.docencrypting.Crypt.Hill;
 
-import io.docencrypting.Crypto.ICrypt;
-import io.docencrypting.Crypto.Playfair.PlayfairCipher;
+import io.docencrypting.Crypt.ICrypt;
 import io.docencrypting.Entities.CryptEntity;
 
 import java.io.*;

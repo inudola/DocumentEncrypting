@@ -1,4 +1,4 @@
-package io.docencrypting.Crypto.Morse;
+package io.docencrypting.Crypt.Morse;
 
 /**
  * Exception throw when cfg file not load

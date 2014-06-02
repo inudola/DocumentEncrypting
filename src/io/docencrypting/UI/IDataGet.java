@@ -1,6 +1,6 @@
 package io.docencrypting.UI;
 
-import io.docencrypting.Crypto.DialogHandler;
+import io.docencrypting.Crypt.DialogHandler;
 
 import java.io.File;
 

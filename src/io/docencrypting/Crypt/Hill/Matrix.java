@@ -1,4 +1,4 @@
-package io.docencrypting.Crypto.Hill;
+package io.docencrypting.Crypt.Hill;
 
 /**
  * Class representation matrix

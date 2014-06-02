@@ -1,6 +1,6 @@
 package io.docencrypting.Controllers;
 
-import io.docencrypting.Crypto.EncryptingKinds;
+import io.docencrypting.Crypt.EncryptingKinds;
 import io.docencrypting.Entities.CryptEntity;
 import io.docencrypting.UI.IDataGet;
 import io.docencrypting.Utils.FileUtils;

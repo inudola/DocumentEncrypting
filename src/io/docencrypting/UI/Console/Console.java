@@ -1,7 +1,7 @@
 package io.docencrypting.UI.Console;
 
 import io.docencrypting.Controllers.EncryptingController;
-import io.docencrypting.Crypto.DialogHandler;
+import io.docencrypting.Crypt.DialogHandler;
 import io.docencrypting.Parser.ArgumentParser;
 import io.docencrypting.UI.IDataGet;
 import org.apache.logging.log4j.LogManager;

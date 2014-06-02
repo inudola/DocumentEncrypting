@@ -1,4 +1,4 @@
-package io.docencrypting.Crypto;
+package io.docencrypting.Crypt;
 
 import io.docencrypting.Entities.CryptEntity;
 

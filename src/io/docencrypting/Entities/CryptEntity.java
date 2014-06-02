@@ -1,13 +1,13 @@
 package io.docencrypting.Entities;
 
-import io.docencrypting.Crypto.DialogHandler;
+import io.docencrypting.Crypt.DialogHandler;
 import java.io.File;
 
 /**
  * Class that contains all information about processing file
- * @see io.docencrypting.Crypto.Morse.Morse
- * @see io.docencrypting.Crypto.Hill.Hill
- * @see io.docencrypting.Crypto.Playfair.Playfair
+ * @see io.docencrypting.Crypt.Morse.Morse
+ * @see io.docencrypting.Crypt.Hill.Hill
+ * @see io.docencrypting.Crypt.Playfair.Playfair
  */
 
 public class CryptEntity {
@@ -112,7 +112,7 @@ public class CryptEntity {
     /**
      * Get handler
      * @return handler
-     * @see #setDialogHandler(io.docencrypting.Crypto.DialogHandler)
+     * @see #setDialogHandler(io.docencrypting.Crypt.DialogHandler)
      */
     public DialogHandler getDialogHandler() {
         return dialogHandler;

@@ -1,4 +1,4 @@
-package io.docencrypting.Crypto.Hill;
+package io.docencrypting.Crypt.Hill;
 
 import io.docencrypting.Config.AppConfig;
 import java.io.BufferedReader;

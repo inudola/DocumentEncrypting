@@ -1,8 +1,8 @@
-package io.docencrypting.Crypto;
+package io.docencrypting.Crypt;
 
-import io.docencrypting.Crypto.Hill.Hill;
-import io.docencrypting.Crypto.Morse.Morse;
-import io.docencrypting.Crypto.Playfair.Playfair;
+import io.docencrypting.Crypt.Hill.Hill;
+import io.docencrypting.Crypt.Morse.Morse;
+import io.docencrypting.Crypt.Playfair.Playfair;
 
 public class CryptFactory {
 

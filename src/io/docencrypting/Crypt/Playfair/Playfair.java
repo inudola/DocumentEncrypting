@@ -1,6 +1,6 @@
-package io.docencrypting.Crypto.Playfair;
+package io.docencrypting.Crypt.Playfair;
 
-import io.docencrypting.Crypto.ICrypt;
+import io.docencrypting.Crypt.ICrypt;
 import io.docencrypting.Entities.CryptEntity;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;

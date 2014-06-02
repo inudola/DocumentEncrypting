@@ -1,7 +1,7 @@
-package io.docencrypting.Crypto.Morse;
+package io.docencrypting.Crypt.Morse;
 
-import io.docencrypting.Crypto.DialogHandler;
-import io.docencrypting.Crypto.ICrypt;
+import io.docencrypting.Crypt.DialogHandler;
+import io.docencrypting.Crypt.ICrypt;
 import io.docencrypting.Entities.CryptEntity;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;

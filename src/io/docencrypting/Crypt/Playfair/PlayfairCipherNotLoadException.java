@@ -1,4 +1,4 @@
-package io.docencrypting.Crypto.Playfair;
+package io.docencrypting.Crypt.Playfair;
 
 public class PlayfairCipherNotLoadException extends RuntimeException {
 

@@ -1,8 +1,7 @@
-package io.docencrypting.Crypto.Playfair;
+package io.docencrypting.Crypt.Playfair;
 
 import io.docencrypting.Config.AppConfig;
-import io.docencrypting.Crypto.DialogHandler;
-import io.docencrypting.Crypto.Hill.HillCipherNotLoadException;
+import io.docencrypting.Crypt.DialogHandler;
 
 import java.io.BufferedReader;
 import java.io.FileReader;

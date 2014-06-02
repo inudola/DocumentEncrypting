@@ -1,4 +1,4 @@
-package io.docencrypting.Crypto;
+package io.docencrypting.Crypt;
 
 /**
  * Dialog handler
