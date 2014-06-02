@@ -1,5 +1,8 @@
 package io.docencrypting.Crypto;
 
+/**
+ * Dialog handler
+ */
 public abstract class DialogHandler {
 
     public enum Type {

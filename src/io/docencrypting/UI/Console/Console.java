@@ -4,7 +4,6 @@ import io.docencrypting.Controllers.EncryptingController;
 import io.docencrypting.Crypto.DialogHandler;
 import io.docencrypting.Parser.ArgumentParser;
 import io.docencrypting.UI.IDataGet;
-import io.docencrypting.UI.UserInterface;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
@@ -14,7 +13,10 @@ import java.io.IOException;
 import java.io.InputStreamReader;
 import java.util.Vector;
 
-public class Console implements IDataGet, UserInterface {
+/**
+ * Console class
+ */
+public class Console implements IDataGet {
 
     private Vector<String> filesIn;
     private String password = null;
@@ -40,6 +42,9 @@ public class Console implements IDataGet, UserInterface {
         }
     };
 
+    /**
+     * Constructor
+     */
     public Console() {
         encryptingController = new EncryptingController();
         encryptingController.setView(this);
@@ -79,17 +84,19 @@ public class Console implements IDataGet, UserInterface {
         return handler;
     }
 
-    @Override
-    public void makeUI() {
-
-    }
-
+    /**
+     * Run method
+     */
     public void run() {
         filesIn = ArgumentParser.filesIn;
         password = ArgumentParser.password;
         needHidden = ArgumentParser.needHidden;
         encryptName = ArgumentParser.encryptName;
-        System.out.println("Encrypting name: " + encryptName);
+        System.out.println("Encrypting name: " +  encryptName);
+        if (encryptName == null) {
+            System.out.println("Exit");
+            System.exit(1);
+        }
         try {
             if (ArgumentParser.isEncrypt) {
                 encryptingController.encrypt();

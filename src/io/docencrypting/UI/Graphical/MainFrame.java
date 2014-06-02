@@ -4,7 +4,6 @@ import io.docencrypting.Controllers.EncryptingController;
 import io.docencrypting.Crypto.DialogHandler;
 import io.docencrypting.Crypto.EncryptingKinds;
 import io.docencrypting.UI.IDataGet;
-import io.docencrypting.UI.UserInterface;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
@@ -14,7 +13,10 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.io.*;
 
-public class MainFrame extends JFrame implements IDataGet, UserInterface {
+/**
+ * Class MainFrame GUI
+ */
+public class MainFrame extends JFrame implements IDataGet {
     JButton fileInButton = new JButton("Upload");
     JButton fileOutButton = new JButton("Save path");
     JButton encryptButton = new JButton("Encrypt");
@@ -39,6 +41,10 @@ public class MainFrame extends JFrame implements IDataGet, UserInterface {
 
     DialogHandler handler;
 
+    /**
+     * Constructor
+     * @throws HeadlessException
+     */
     public MainFrame() throws HeadlessException {
         encryptingController = new EncryptingController();
         encryptingController.setView(this);
@@ -89,7 +95,6 @@ public class MainFrame extends JFrame implements IDataGet, UserInterface {
         return ((EncryptingKinds) typeComboBox.getSelectedItem()).name();
     }
 
-    @Override
     public void makeUI() {
 
         typeComboBox = new JComboBox<>(encryptingController.getAvailableEncrypting());
@@ -188,15 +193,7 @@ public class MainFrame extends JFrame implements IDataGet, UserInterface {
         setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
     }
 
-    public String getFileInPath() {
-        File[] arrayFile = fileInChooser.getSelectedFiles();
-        if (arrayFile.length > 1) {
-            return arrayFile[0].getParent();
-        }
-        return arrayFile[0].getAbsolutePath();
-    }
-
-    public void centerFrame(){
+    private void centerFrame(){
 
         String arSettings = getSettings();
         String[] arraySettings = arSettings.split("\n");
@@ -215,6 +212,10 @@ public class MainFrame extends JFrame implements IDataGet, UserInterface {
         setLocationRelativeTo(null);
     }
 
+    /**
+     * Get settings
+     * @return screen size
+     */
     public String getSettings()
     {
         File file = new File("settings.txt");

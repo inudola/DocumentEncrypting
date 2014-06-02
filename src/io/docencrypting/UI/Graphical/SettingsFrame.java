@@ -12,29 +12,25 @@ import java.text.NumberFormat;
 import java.util.Scanner;
 
 /**
- *  Singleton Class that contains common application settings
+ * Class that contains common application settings
  */
-
-
 public class SettingsFrame extends JFrame {
 
-    private JCheckBox replaceExistsFileCheck = new JCheckBox();
-    private JTextField postfixField = new JTextField("_postfix");
     private JTextField widthScreenField = new JTextField();
     private JTextField heightScreenField = new JTextField();
     private JButton save = new JButton("Save");
     private JButton cancel = new JButton("Cancel");
 
-    private JLabel replace = new JLabel("Replace exists file");
-    private JLabel postfix = new JLabel("Postfix:");
     private JLabel x = new JLabel("x");
     private JLabel screenSize = new JLabel("Screen size:");
 
-    //private static Log log = new Log();
     private static final Logger logger = LogManager.getLogger(SettingsFrame.class);
 
     Box boxSettings = new Box(BoxLayout.Y_AXIS);
 
+    /**
+     * Constructor
+     */
     public SettingsFrame() {
 
         widthScreenField = new JFormattedTextField(NumberFormat.getInstance());
@@ -79,13 +75,13 @@ public class SettingsFrame extends JFrame {
         setVisible(true);
     }
 
-    public void centerFrame(){
+    private void centerFrame(){
         Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();
         setSize((int)screenSize.getWidth()/2,(int)screenSize.getHeight()/2);
         setLocationRelativeTo(null);
     }
 
-    public static void  setScreenSize(String width, String height){
+    private static void  setScreenSize(String width, String height){
         FileWriter writeFile = null;
         try {
             File sFile = new File("settings.txt");
@@ -105,7 +101,7 @@ public class SettingsFrame extends JFrame {
         }
     }
 
-    public static String getSettings()
+    private static String getSettings()
     {
         File file = new File("settings.txt");
         StringBuilder sb = new StringBuilder();

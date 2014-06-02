@@ -3,6 +3,9 @@ package io.docencrypting.UI.Graphical;
 import javax.swing.*;
 import java.awt.*;
 
+/**
+ * Helper for create line box component
+ */
 public class BoxCreator {
 
     public static Box makeLineBox(JComponent ... components) {

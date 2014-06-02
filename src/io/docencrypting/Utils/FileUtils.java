@@ -29,12 +29,4 @@ public class FileUtils {
         return files;
     }
 
-    public static File getPath(File file) {
-        File path = null;
-        if (file == null) {
-            return null;
-        }
-        return file;
-    }
-
 }

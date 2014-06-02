@@ -7,6 +7,9 @@ import org.apache.logging.log4j.Logger;
 import java.io.File;
 import java.util.Vector;
 
+/**
+ * Parse command line arguments
+ */
 public class ArgumentParser {
 
     public static Vector<String> filesIn;

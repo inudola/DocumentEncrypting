@@ -9,6 +9,9 @@ import java.io.File;
 import java.io.IOException;
 import java.util.Vector;
 
+/**
+ * Encrypting controller
+ */
 public class EncryptingController {
 
     private IDataGet view;
@@ -17,10 +20,19 @@ public class EncryptingController {
         this.view = view;
     }
 
+    /**
+     * Return available encrypting
+     * @return encrypting kinds
+     */
     public EncryptingKinds[] getAvailableEncrypting() {
         return EncryptingKinds.values();
     }
 
+    /**
+     * Encrypt files
+     * @return true is success, otherwise false
+     * @throws IOException
+     */
     public boolean encrypt() throws IOException {
         File[] files = view.getFilesIn();
         if (files.length == 0) {
@@ -49,6 +61,11 @@ public class EncryptingController {
         return answer;
     }
 
+    /**
+     * Decrypt files
+     * @return true if success, otherwise false
+     * @throws IOException
+     */
     public boolean decrypt() throws  IOException {
         File[] files = view.getFilesIn();
         if (files.length == 0) {
@@ -77,9 +94,14 @@ public class EncryptingController {
         return true;
     }
 
+    /**
+     * Create cryptEntity
+     * @param fileIn input file
+     * @param fileOutGetter getter
+     * @return cryptEntity
+     */
     public CryptEntity createCryptEntity(File fileIn, IGetFileOut fileOutGetter) {
         CryptEntity cryptEntity = new CryptEntity();
-//        File fileIn;
         File fileOut;
         String password = null;
         String name = null;

@@ -3,7 +3,6 @@ package io.docencrypting.Crypto.Hill;
 /**
  * Class representation matrix
  */
-//TODO delete unused functions
 class Matrix {
 
     private Integer[][] matrix;     /// Matrix

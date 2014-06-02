@@ -4,10 +4,10 @@ import io.docencrypting.Config.AppConfig;
 import io.docencrypting.Parser.ArgumentParser;
 import io.docencrypting.UI.Console.Console;
 import io.docencrypting.UI.Graphical.MainFrame;
-import io.docencrypting.UI.UserInterface;
 
-import javax.swing.*;
-
+/**
+ * Application controller
+ */
 public class ApplicationController {
 
     String[] args;
@@ -16,10 +16,12 @@ public class ApplicationController {
         this.args = args;
     }
 
+    /**
+     * Start app
+     */
     public void run() {
         ArgumentParser.parse(args);
         AppConfig appConfig = AppConfig.getInstance();
-        UserInterface userInterface;
         if (appConfig.isConsole()) {
             new Console().run();
         } else {
