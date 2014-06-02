@@ -2,6 +2,8 @@ package io.docencrypting.Crypto.Morse;
 
 import io.docencrypting.Config.AppConfig;
 import io.docencrypting.Crypto.DialogHandler;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 import java.io.BufferedReader;
 import java.io.FileReader;
@@ -15,6 +17,7 @@ public class MorseCipher {
     private HashMap<String, String> letterToMorse = null;  ///conversation from letter to morse sequence
     private HashMap<String, String> morseToLetter = null;  ///conversation from morse sequence to letter
 
+    private static final Logger logger = LogManager.getLogger(MorseCipher.class.getName());
     /**
      * Initialize hashmaps
      */
@@ -25,6 +28,7 @@ public class MorseCipher {
         try {
             reader = new BufferedReader(new FileReader(AppConfig.DEFAULT_MORSE_CFG_PATH));
         } catch (Exception ex) {
+            logger.error("Don't find " + AppConfig.DEFAULT_MORSE_CFG_PATH);
             throw new MorseCipherNotLoadException("Don't find " + AppConfig.DEFAULT_MORSE_CFG_PATH);
         }
         String str;
@@ -41,6 +45,7 @@ public class MorseCipher {
             }
             reader.close();
         } catch (IOException ex) {
+            logger.error("Don't find " + AppConfig.DEFAULT_MORSE_CFG_PATH);
             throw new MorseCipherNotLoadException(AppConfig.DEFAULT_MORSE_CFG_PATH + " don't read");
         }
 
@@ -53,7 +58,8 @@ public class MorseCipher {
      */
     public String getMorse(String letter, DialogHandler handler) {
         String morse = letterToMorse.get(letter);
-        if (morse == null && handler.show("Symbol don't find\nSkip this?", "Error")) {
+        if ((letter != null && letter.equals(SPACE)) ||
+                (morse == null && handler.show("Symbol don't find \"" + letter + "\"\nSkip this?", "Error"))) {
             morse = letterToMorse.get(DIVIDER);
         }
         return morse;
@@ -64,9 +70,10 @@ public class MorseCipher {
      * @param morse morse sequence for convert
      * @return letter
      */
-    public String getLetter(String morse) {
+    public String getLetter(String morse, DialogHandler handler) {
         String letter = morseToLetter.get(morse);
-        if (letter == null || letter.equals(DIVIDER)) {
+        if ((letter == null && handler.show("Symbol don't find \"" + morse + "\"\nSkip this?", "Error"))
+                || letter != null && letter.equals(DIVIDER)) {
             letter = SPACE;
         }
         return letter;

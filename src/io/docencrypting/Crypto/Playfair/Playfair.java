@@ -2,12 +2,21 @@ package io.docencrypting.Crypto.Playfair;
 
 import io.docencrypting.Crypto.ICrypt;
 import io.docencrypting.Entities.CryptEntity;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 import java.io.*;
 import java.util.Vector;
 
+/**
+ * Implement Playfair cipher
+ */
 public class Playfair implements ICrypt {
 
+    private static final Logger logger = LogManager.getLogger(Playfair.class.getName());
+    /**
+     * Pair number
+     */
     static public class Pair {
         int x;
         int y;
@@ -23,6 +32,12 @@ public class Playfair implements ICrypt {
         }
     }
 
+    /**
+     * Decode logic
+     * @param entity contains all information that needed for cipher algorithm
+     * @return true if success, otherwise false
+     * @throws IOException
+     */
     @Override
     public boolean decode(CryptEntity entity) throws IOException {
         PlayfairCipher cipher = new PlayfairCipher();
@@ -38,6 +53,7 @@ public class Playfair implements ICrypt {
         while ((line = reader.readLine()) != null) {
             line = cipher.processLine(line, entity.getDialogHandler());
             if (line == null) {
+                logger.error("Line is empty");
                 return false;
             }
             for (String word : line.split(" ")) {
@@ -90,6 +106,12 @@ public class Playfair implements ICrypt {
         return true;
     }
 
+    /**
+     * Encode logic
+     * @param entity contains all information that needed for cipher algorithm
+     * @return true if success, otherwise false
+     * @throws IOException
+     */
     @Override
     public boolean encode(CryptEntity entity) throws IOException {
         PlayfairCipher cipher = new PlayfairCipher();
@@ -106,6 +128,7 @@ public class Playfair implements ICrypt {
             /*entity.getDialogHandler().show("Symbol don't find\nSkip this?", "Error")*/
             line = cipher.processLine(line, entity.getDialogHandler());
             if (line == null) {
+                logger.error("Line is empty");
                 return false;
             }
             for (String word : line.split(" ")) {

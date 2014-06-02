@@ -84,6 +84,9 @@ public class HillCipher {
         }
         int count = 0;
         String str;
+        integerToString.put(count, ' ');
+        stringToInteger.put(' ', count);
+        count++;
         try {
             while ((str = reader.readLine()) != null) {
                 if (!str.isEmpty()) {
@@ -92,9 +95,6 @@ public class HillCipher {
                     count++;
                 }
             }
-            integerToString.put(count, ' ');
-            stringToInteger.put(' ', count);
-            SPACE_INDEX = count;
         } catch (IOException e) {
             throw new HillCipherNotLoadException(AppConfig.DEFAULT_HILL_CFG_PATH + " don't read");
         }

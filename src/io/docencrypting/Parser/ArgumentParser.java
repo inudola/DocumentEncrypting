@@ -1,49 +1,68 @@
 package io.docencrypting.Parser;
 
 import io.docencrypting.Config.AppConfig;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 import java.io.File;
 import java.util.Vector;
 
 public class ArgumentParser {
 
-    static Vector<String> filesIn;
-    static String pathOut;
-    static String password;
+    public static Vector<String> filesIn;
+    public static String password;
+    public static String encryptName;
+    public static boolean needHidden = false;
+    public static boolean isEncrypt = true;
+    private static final Logger logger = LogManager.getLogger(ArgumentParser.class.getName());
 
     public static void parse(String[] args) {
         filesIn = new Vector<>();
         AppConfig appConfig = AppConfig.getInstance();
 
-        System.out.println(args.length);
-
         for (int i = 0; i < args.length; i++) {
             String arg = args[i];
-            System.out.println(arg);
             switch (arg) {
                 case "-c":
-                    System.out.println("Set console");
                     appConfig.setConsole(true);
                     break;
                 case "-l":
-                    System.out.println(appConfig.toString());
+                    appConfig.setLogging(true);
                     break;
                 case "-h":
-                     System.out.println("Help");
+                    System.out.println("usage: DocumentEncryption.jar -n \"Encrypting name\" [-p \"Password\"] input files [-e | -d]");
+                    System.out.println("Encrypting name: Morse, Hill, Playfair");
                     System.exit(0);
                     break;
-                case "-p":
-                    if (args.length < i + 1)
+                case "-n":
+                    if (args.length < i + 1) {
+                        logger.error("Wrong format");
                         System.exit(1);
+                    }
+                    encryptName = args[++i];
+                    break;
+                case "-p":
+                    if (args.length < i + 1)  {
+                        logger.error("Wrong format");
+                        System.exit(1);
+                    }
                     password = args[++i];
-                    System.out.println("Password: " + password);
+                    break;
+                case "-v":
+                    needHidden = true;
+                    break;
+                case "-e":
+                    isEncrypt = true;
+                    break;
+                case "-d":
+                    isEncrypt = false;
                     break;
                 default:
                     if (new File(arg).exists()) {
                         filesIn.add(arg);
                     } else {
-                        System.out.println("Path out: " + arg);
-                        pathOut = arg;
+                        logger.error("Wrong parameter: " + arg);
+                        System.exit(2);
                     }
             }
         }

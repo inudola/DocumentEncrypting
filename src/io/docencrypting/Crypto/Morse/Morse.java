@@ -1,7 +1,10 @@
 package io.docencrypting.Crypto.Morse;
 
+import io.docencrypting.Crypto.DialogHandler;
 import io.docencrypting.Crypto.ICrypt;
 import io.docencrypting.Entities.CryptEntity;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 import java.io.*;
 
@@ -13,6 +16,8 @@ public class Morse implements ICrypt {
 
     MorseCipher cipher = new MorseCipher(); ///Morse cipher logic
 
+    private static final Logger logger = LogManager.getLogger(Morse.class.getName());
+
     /**
      * Decode file
      * @param entity contains all information that needed for cipher algorithm
@@ -21,17 +26,22 @@ public class Morse implements ICrypt {
      */
     @Override
     public boolean decode(CryptEntity entity) throws IOException {
-        process(entity, new LineProcessing() {
+        final DialogHandler handler = entity.getDialogHandler();
+        return process(entity, new LineProcessing() {
             @Override
             public String perform(String line) {
                 StringBuilder builder = new StringBuilder();
                 for (String morse : line.split(" ")) {
-                    builder.append(cipher.getLetter(morse));
+                    String letter = cipher.getLetter(morse, handler);
+                    if (letter == null) {
+                        logger.error("Decrypting Morse fault");
+                        return null;
+                    }
+                    builder.append(letter);
                 }
                 return builder.toString();
             }
         });
-        return true;
     }
 
     /**
@@ -41,17 +51,19 @@ public class Morse implements ICrypt {
      * @see #decode(io.docencrypting.Entities.CryptEntity)
      */
     @Override
-    public boolean encode(final CryptEntity entity) throws IOException {
+    public boolean encode(CryptEntity entity) throws IOException {
+        final DialogHandler handler = entity.getDialogHandler();
         return process(entity, new LineProcessing() {
             @Override
             public String perform(String line) {
                 StringBuilder builder = new StringBuilder();
                 for (Character character : line.toUpperCase().toCharArray()) {
-                    String morse = cipher.getMorse(character.toString(), entity.getDialogHandler());
+                    String morse = cipher.getMorse(character.toString(), handler);
                     if (morse == null) {
+                        logger.error("Encrypting Morse fault");
                         return null;
                     }
-                    builder.append(morse + " ");
+                    builder.append(morse).append(" ");
                 }
                 return builder.toString();
             }

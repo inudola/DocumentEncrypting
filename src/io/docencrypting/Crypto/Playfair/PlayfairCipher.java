@@ -9,15 +9,23 @@ import java.io.FileReader;
 import java.io.IOException;
 import java.util.Vector;
 
+/**
+ * Contains functions for implementing playfair cipher
+ */
 public class PlayfairCipher {
 
-    private Vector<Vector<Character>> keyMatrix = new Vector<>();
-    private Vector<Character> alphabet = new Vector<>();
+    private Vector<Vector<Character>> keyMatrix = new Vector<>();   /// Key matrix
+    private Vector<Character> alphabet = new Vector<>();            /// All symbols
 
     public PlayfairCipher() {
         fillAlphabet();
     }
 
+    /**
+     * Get coordinate symbol
+     * @param character symbol
+     * @return Pair x,y coordinate
+     */
     public Playfair.Pair getCoordinate(Character character) {
         if (character.equals('J'))
             character = 'I';
@@ -31,10 +39,19 @@ public class PlayfairCipher {
         return null;
     }
 
+    /**
+     * Get character from coordinate
+     * @param x - horizontal
+     * @param y - vertical
+     * @return character
+     */
     public Character getCharacter(int x, int y) {
         return keyMatrix.get(x).get(y);
     }
 
+    /**
+     * Fill symbols vector
+     */
     private void fillAlphabet() {
         BufferedReader reader;
         try {
@@ -53,6 +70,11 @@ public class PlayfairCipher {
         }
     }
 
+    /**
+     * Fill key matrix
+     * @param key password for encrypting
+     * @return key matrix
+     */
     public Vector<Vector<Character>> fillKeyMatrix(String key) {
         Vector<Character> characters = new Vector<>();
         for (Character character : key.toCharArray()) {
@@ -75,6 +97,11 @@ public class PlayfairCipher {
         return keyMatrix;
     }
 
+    /**
+     * Modify text before encoding
+     * @param text source text
+     * @return modify text
+     */
     public Vector<Character> modifyText(String text) {
         Vector<Character> modifiedText = new Vector<>();
         for (int i = 0; i < text.length(); i++) {
@@ -87,6 +114,11 @@ public class PlayfairCipher {
         return modifiedText;
     }
 
+    /**
+     * Simplify text after decoding
+     * @param text modify text
+     * @return source text
+     */
     public String simplifyText(String text) {
         StringBuilder builder = new StringBuilder();
         for (int i = 0; i < text.length(); i++) {
@@ -108,6 +140,11 @@ public class PlayfairCipher {
         return builder.toString();
     }
 
+    /**
+     * Divide string on pair
+     * @param text text
+     * @return vector of pairs
+     */
     public Vector<String> createPairArray(Vector<Character> text) {
         Vector<String> pairArray = new Vector<>();
         for (int i = 0; i < text.size() / 2; i++)
@@ -115,6 +152,11 @@ public class PlayfairCipher {
         return pairArray;
     }
 
+    /**
+     * Check character for contains in symbols
+     * @param character character
+     * @return true if contains, otherwise false
+     */
     private boolean contains(Character character) {
         return alphabet.contains(character);
     }

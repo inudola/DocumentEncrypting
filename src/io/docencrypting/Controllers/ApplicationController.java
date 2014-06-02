@@ -20,11 +20,9 @@ public class ApplicationController {
         ArgumentParser.parse(args);
         AppConfig appConfig = AppConfig.getInstance();
         UserInterface userInterface;
-        System.out.println("Is console" + appConfig.isConsole());
         if (appConfig.isConsole()) {
-            new Console();
+            new Console().run();
         } else {
-            System.out.println("Frame");
             new MainFrame().setVisible(true);
 
         }

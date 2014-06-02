@@ -21,7 +21,7 @@ public class EncryptingController {
         return EncryptingKinds.values();
     }
 
-    public boolean encryptWith() throws IOException {
+    public boolean encrypt() throws IOException {
         File[] files = view.getFilesIn();
         if (files.length == 0) {
             return false;
@@ -31,8 +31,12 @@ public class EncryptingController {
         for (File file : fileVector) {
             CryptEntity cryptEntity = createCryptEntity(file, new IGetFileOut() {
                 @Override
-                public File getFileOut(String name, File fileIn) {
-                    return new File(view.getFileOut(), "Encrypt_" + name + "_" + fileIn.getName());
+                public File getFileOut(File out, File fileIn) {
+                    if (out == null) {
+                        return fileIn;
+                    } else {
+                        return new File(out, fileIn.getName());
+                    }
                 }
             });
             if (cryptEntity == null) {
@@ -54,9 +58,12 @@ public class EncryptingController {
         for (File file : fileVector) {
             CryptEntity cryptEntity = createCryptEntity(file, new IGetFileOut() {
                 @Override
-                public File getFileOut(String name, File fileIn) {
-                    return new File(view.getFileOut(), "Decrypt_" + name + "_" + fileIn.getName().substring(
-                            fileIn.getName().lastIndexOf('_') + 1, fileIn.getName().length()));
+                public File getFileOut(File out, File fileIn) {
+                    if (out == null) {
+                        return fileIn;
+                    } else {
+                        return new File(out, fileIn.getName());
+                    }
                 }
             });
             if (cryptEntity == null) {
@@ -87,7 +94,7 @@ public class EncryptingController {
                 !view.getNameEncryptingAlgorithm().isEmpty()) {
             name = view.getNameEncryptingAlgorithm();   //don't might be empty
         }
-        fileOut = fileOutGetter.getFileOut(name, fileIn);
+        fileOut = fileOutGetter.getFileOut(view.getFileOut(), fileIn);
         needHidden = view.getNeedHiddenFiles();
         cryptEntity.setDialogHandler(view.getDialogHandler());
 
@@ -100,7 +107,7 @@ public class EncryptingController {
     }
 
     private interface IGetFileOut {
-        public File getFileOut(String name, File fileIn);
+        public File getFileOut(File out, File fileIn);
     }
 
 }

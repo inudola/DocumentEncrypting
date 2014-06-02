@@ -12,13 +12,9 @@ import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.io.BufferedReader;
-import java.io.File;
-import java.io.FileReader;
-import java.io.IOException;
+import java.io.*;
 
 public class MainFrame extends JFrame implements IDataGet, UserInterface {
-
     JButton fileInButton = new JButton("Upload");
     JButton fileOutButton = new JButton("Save path");
     JButton encryptButton = new JButton("Encrypt");
@@ -36,12 +32,18 @@ public class MainFrame extends JFrame implements IDataGet, UserInterface {
     JLabel typeLabel = new JLabel("Type:");
     JLabel passwordLabel = new JLabel("Password:");
     JLabel hiddenLabel = new JLabel("Hidden:");
-    private static final Logger logger = LogManager.getLogger(SettingsFrame.class);
+    private static final Logger logger = LogManager.getLogger(MainFrame.class.getName());
     Box box = new Box(BoxLayout.Y_AXIS);
 
     EncryptingController encryptingController;
 
     DialogHandler handler;
+
+    public MainFrame() throws HeadlessException {
+        encryptingController = new EncryptingController();
+        encryptingController.setView(this);
+        makeUI();
+    }
 
     private void createDialogHandler() {
         handler = new DialogHandler() {
@@ -55,13 +57,6 @@ public class MainFrame extends JFrame implements IDataGet, UserInterface {
                 return isNeedChange();
             }
         };
-    }
-
-    public MainFrame() throws HeadlessException {
-        encryptingController = new EncryptingController();
-        encryptingController.setView(this);
-        makeUI();
-
     }
 
     @Override
@@ -139,7 +134,7 @@ public class MainFrame extends JFrame implements IDataGet, UserInterface {
                 logger.debug("Encrypting file");
                 try {
                     createDialogHandler();
-                    encryptingController.encryptWith();
+                    encryptingController.encrypt();
                     logger.debug("Encrypting success");
                 } catch (IOException ex) {
                     logger.error("Encrypting failed");
@@ -154,15 +149,15 @@ public class MainFrame extends JFrame implements IDataGet, UserInterface {
         decryptButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                logger.debug("Dencrypting file");
+                logger.debug("Decrypting file");
                 try {
                     encryptingController.decrypt();
-                    logger.debug("Dencrypting success");
+                    logger.debug("Decrypting success");
                 } catch (IOException ex) {
                     JOptionPane.showMessageDialog(null, ex.getLocalizedMessage());
-                    logger.error("Dencrypting failed");
+                    logger.error("Decrypting failed");
                 }
-                logger.debug("Dencrypting done");
+                logger.debug("Decrypting done");
             }
         });
 
@@ -177,13 +172,10 @@ public class MainFrame extends JFrame implements IDataGet, UserInterface {
         typeComboBox.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                if(typeComboBox.getSelectedItem().equals(EncryptingKinds.Morse))
-                {
+                if (typeComboBox.getSelectedItem().equals(EncryptingKinds.Morse)) {
                     passwordField.setVisible(false);
                     passwordLabel.setVisible(false);
-                }
-                else
-                {
+                } else {
                     passwordField.setVisible(true);
                     passwordLabel.setVisible(true);
                 }
@@ -196,10 +188,9 @@ public class MainFrame extends JFrame implements IDataGet, UserInterface {
         setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
     }
 
-    public String getFileInPath(){
+    public String getFileInPath() {
         File[] arrayFile = fileInChooser.getSelectedFiles();
-        if(arrayFile.length > 1)
-        {
+        if (arrayFile.length > 1) {
             return arrayFile[0].getParent();
         }
         return arrayFile[0].getAbsolutePath();
@@ -227,22 +218,36 @@ public class MainFrame extends JFrame implements IDataGet, UserInterface {
     public String getSettings()
     {
         File file = new File("settings.txt");
+        if (!file.exists()) {
+            try {
+                BufferedWriter writer = new BufferedWriter(new FileWriter(file));
+                writer.write("0\n0");
+                writer.close();
+            } catch (IOException e) {
+                logger.error("Settings file don't created");
+                e.printStackTrace();
+            }
+        }
         StringBuilder sb = new StringBuilder();
         try {
-            BufferedReader in = new BufferedReader(new FileReader( file.getAbsoluteFile()));
+            BufferedReader in = new BufferedReader(new FileReader(file.getAbsoluteFile()));
             try {
                 String s;
                 while ((s = in.readLine()) != null) {
                     sb.append(s);
                     sb.append("\n");
                 }
+            } catch (Exception e) {
+                logger.error("Settings file don't read");
             } finally {
                 in.close();
             }
         } catch(IOException e) {
+            logger.error("Settings file don't read");
             throw new RuntimeException(e);
         }
         return sb.toString();
     }
+
 }
 
